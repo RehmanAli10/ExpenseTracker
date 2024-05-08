@@ -3,7 +3,7 @@ import {createContext, useContext} from 'react';
 const MainContext = createContext();
 
 function MainProvider({children}) {
-  return <MainContext.Provider value={{}}>{children}</MainContext.Provider>;
+  return <MainContext.Provider>{children}</MainContext.Provider>;
 }
 
 function useMainContext() {

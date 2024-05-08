@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   View,
   Text,
@@ -9,16 +8,20 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import CustomBottomSheet from '../Components/CustomBottomSheet';
-import {DeleteIcon} from '../Assets/Icons';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import EditIcon from '../Assets/Icons/EditIcon';
-import {useTransactions} from '../CustomHooks/useTransactions';
 import {useMutation} from '@tanstack/react-query';
+
+import CustomBottomSheet from '../Components/CustomBottomSheet';
+import {DeleteIcon} from '../Assets/Icons';
+import EachTransaction from './EachTransaction';
+import EditIcon from '../Assets/Icons/EditIcon';
+import {BackIcon} from '../Assets/Icons';
+
+import {useTransactions} from '../CustomHooks/useTransactions';
+import HeaderComponent from '../Components/HeaderComponent';
 
 function TransactionScreen({navigation}) {
   const {transactions, isLoading} = useTransactions();
@@ -40,78 +43,18 @@ function TransactionScreen({navigation}) {
 
   const handleEdit = () => {};
 
-  const renderingIncomeData = transactions.map(curr =>
-    curr.type === 'income' ? (
-      <View style={styles.innerContainerTwo}>
-        <View key={curr.id} style={styles.textDeleteContainer}>
-          <View style={styles.incomeItem}>
-            <Text style={styles.textContent}>{curr.type}</Text>
-
-            <Text style={styles.textContent}>Date and Time: {curr.time}</Text>
-            <Text style={styles.textContent}>
-              Description: {curr.description}
-            </Text>
-
-            <Text style={styles.textContent}>
-              Your Income: {curr.amount}.Rs
-            </Text>
-          </View>
-          <View style={styles.editDeleteIconView}>
-            <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
-              <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleEdit(curr)}
-              activeOpacity={0.6}>
-              <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    ) : (
-      <View onPress={() => handleEdit(curr)} style={styles.innerContainerTwo}>
-        <View key={curr.id} style={styles.textDeleteContainer}>
-          <View style={styles.expenseItem}>
-            <Text style={styles.expenseContent}>{curr.type}</Text>
-
-            <Text style={styles.expenseContent}>
-              Date and Time: {curr.time}
-            </Text>
-            <Text style={styles.expenseContent}>
-              Description: {curr.description}
-            </Text>
-
-            <Text style={styles.expenseContent}>
-              Your Expense: {curr.amount}.Rs
-            </Text>
-          </View>
-          <View style={styles.editDeleteIconView}>
-            <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
-              <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleEdit(curr)}
-              activeOpacity={0.6}>
-              <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    ),
-  );
-
   if (isLoading)
     return <ActivityIndicator style={styles.container} size={'large'} />;
 
   return (
     <View style={styles.container}>
-      <Button title="Clear All" onPress={clearAll} color="red" />
+      <HeaderComponent
+        newIcon={<BackIcon color={'white'} height={'8%'} width={'8%'} />}
+      />
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <View style={styles.incomeData}>
-          {/* showing income and expense data */}
-          {renderingIncomeData}
-          {/* {renderingExpenseData} */}
-        </View>
+        {transactions?.map(trans => (
+          <EachTransaction key={trans.id} trans={trans} />
+        ))}
       </ScrollView>
       <Button
         title={`Balance: ${totalBalance} RS`}
