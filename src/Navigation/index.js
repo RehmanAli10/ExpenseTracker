@@ -4,10 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 import {
-  IncomeContainer,
-  HomeContainer,
-  TransactionContainer,
   RegisterContainer,
+  HomeContainer,
+  IncomeContainer,
+  TransactionContainer,
   SettingsContainer,
 } from '../Container';
 

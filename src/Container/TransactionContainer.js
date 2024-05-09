@@ -1,7 +1,15 @@
 import React from 'react';
-import TransactionScreen from '../Screens/TransactionScreen';
+import {TransactionScreen} from '../Screens';
 
 function TransactionContainer({navigation}) {
-  return <TransactionScreen navigation={navigation} />;
+  function handleNavigateBack() {
+    navigation.goBack();
+  }
+  return (
+    <TransactionScreen
+      navigation={navigation}
+      handleNavigateBack={handleNavigateBack}
+    />
+  );
 }
 export default TransactionContainer;

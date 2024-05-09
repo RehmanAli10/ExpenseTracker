@@ -1,53 +1,52 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {DeleteIcon} from '../Assets/Icons';
-import EditIcon from '../Assets/Icons/EditIcon';
-import {formattedDate} from '../Utils/helpers';
+import {formattedDate} from '../../Utils/helpers';
+import ForwardIcon from '../../Assets/Icons/ForwardIcon';
 
-function EachTransaction({trans, key}) {
-  const {amount, description, time, type} = trans;
+function EachTransaction({transaction}) {
+  const {id, amount, description, time, type} = transaction;
 
-  const date = formattedDate(time).slice(0, 2);
+  let date = formattedDate(time).formatted.slice(5, 7);
 
   return (
     <>
       {type === 'income' ? (
-        <View style={styles.container} key={key}>
+        <View style={styles.container} key={id}>
           <View style={styles.dateDescriptionContainer}>
             <View style={styles.date}>
               <Text style={styles.dateText}>{date}</Text>
             </View>
             <View>
-              <Text>{amount}</Text>
-              <Text>Description</Text>
+              <Text style={styles.incomeAmount}>{amount}</Text>
+              <Text style={styles.incomeDescription}>{description}</Text>
             </View>
           </View>
 
           <View style={styles.editDeleteView}>
-            <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
-            <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
+            <ForwardIcon color={'black'} height={45} width={45} />
           </View>
         </View>
       ) : (
-        <View style={styles.container} key={key}>
+        <View style={styles.container} key={id}>
           <View style={styles.dateDescriptionContainer}>
             <View style={styles.date}>
               <Text style={styles.dateText}>{date}</Text>
             </View>
             <View>
-              <Text>{amount}</Text>
-              <Text>Description</Text>
+              <Text style={styles.expenseAmount}>{amount}</Text>
+              <Text style={styles.expenseDescription}>{description}</Text>
             </View>
           </View>
 
           <View style={styles.editDeleteView}>
-            <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
-            <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
+            <TouchableOpacity>
+              <ForwardIcon color={'black'} height={45} width={45} />
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -60,17 +59,29 @@ export default EachTransaction;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#ffff',
     marginBottom: '3%',
     height: hp('10%'),
     width: wp('100%'),
-    gap: 190,
   },
   dateDescriptionContainer: {
     flexDirection: 'row',
     gap: 20,
+    marginLeft: '2%',
+  },
+  incomeDescription: {
+    color: 'green',
+  },
+  incomeAmount: {
+    color: 'green',
+  },
+  expenseDescription: {
+    color: 'darkred',
+  },
+  expenseAmount: {
+    color: 'darkred',
   },
   date: {
     backgroundColor: 'black',

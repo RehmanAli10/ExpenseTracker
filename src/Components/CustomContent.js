@@ -2,26 +2,16 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import CustomSpinner from './CustomSpinner';
-import {useTransactions} from '../CustomHooks/useTransactions';
+import {useTransactions} from '../Screens/TransactionScreen/useTransactions';
 
 function CustomContent() {
-  const {transactions, isLoading} = useTransactions();
-
-  let totalIncome = transactions
-    ?.filter(currElem => currElem.type === 'income')
-    .reduce((acc, currElem) => acc + currElem.amount, 0);
-
-  let totalExpense = transactions
-    ?.filter(currElem => currElem.type === 'expense')
-    .reduce((acc, currElem) => acc + currElem.amount, 0);
-
-  let totalBalance = totalIncome - totalExpense;
+  const {isLoading, totalIncome, totalExpense, totalBalance} =
+    useTransactions();
 
   return (
     <View style={styles.contentContainer}>
       <View>
         <Text style={styles.incomeText}>Income</Text>
-        {/* added the state prop to show the updated income data */}
 
         {isLoading ? (
           <CustomSpinner size={'small'} color={'#0000ff'} />

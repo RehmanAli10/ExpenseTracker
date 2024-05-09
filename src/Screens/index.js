@@ -1,5 +1,5 @@
 import HomeScreen from './HomeScreen';
-import TransactionScreen from './TransactionScreen';
+import TransactionScreen from './TransactionScreen/TransactionScreen';
 import WelcomeScreen from './WelcomeAndLoginScreens/WelcomeScreen';
 import LoginScreen from './WelcomeAndLoginScreens/LoginScreen';
 import RegisterScreen from './WelcomeAndLoginScreens/RegisterScreen';

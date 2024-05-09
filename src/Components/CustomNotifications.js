@@ -1,6 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
-import {useMainContext} from '../Contexts/MainContext';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export default function CustomNotifications({
@@ -10,9 +9,9 @@ export default function CustomNotifications({
   borderBottomRadius = wp('1%'),
   color = 'white',
   duration = 2000,
+  isNotification = false,
+  setIsNotification,
 }) {
-  const {dispatch, isNotificationIncome, isNotificationExpense} =
-    useMainContext();
   const containerStyles = {
     width: width,
     backgroundColor: backgroundColor,
@@ -23,16 +22,14 @@ export default function CustomNotifications({
   };
 
   useEffect(() => {
-    if (!isNotificationIncome && !isNotificationExpense) return;
+    if (!isNotification) return;
 
     setTimeout(() => {
-      if (isNotificationIncome) {
-        dispatch({type: 'notification', payload: {notify: false}});
-      } else {
-        dispatch({type: 'expNotification', payload: {notify: false}});
+      if (isNotification) {
+        setIsNotification(false);
       }
     }, duration);
-  }, [isNotificationIncome, isNotificationExpense]);
+  }, [isNotification]);
   return (
     <View style={[styles.container, containerStyles]}>
       <Text style={messageStyle}>{message}</Text>

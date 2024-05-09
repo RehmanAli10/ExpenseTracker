@@ -16,11 +16,15 @@ import {
 } from 'react-native-responsive-screen';
 
 import CustomNotifications from '../../Components/CustomNotifications';
-import {formattedDate} from '../../Utils/helpers';
+import {formatFormDate} from '../../Utils/helpers';
+import {useAddExpense} from './useAddExpense';
 
 function ExpenseFormScreen() {
   const route = useRoute();
   const {index} = route.params || {};
+
+  const {isNotificationExpense, setIsNotificationExpense, message, addExpense} =
+    useAddExpense();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -31,7 +35,7 @@ function ExpenseFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.time : formattedDate(new Date()),
+    index ? index.time : formatFormDate(new Date()),
   );
 
   // date and time functions
@@ -44,15 +48,21 @@ function ExpenseFormScreen() {
   };
 
   const handleConfirm = date => {
-    const newDate = formattedDate(date);
+    const newDate = formatFormDate(date);
     setDateTimeEvent(newDate);
     hideDatePicker();
   };
 
   const handleAddExpense = () => {
     if (eventDescription && dateTimeEvent && inputValueEvent) {
+      addExpense({
+        amount: inputValueEvent,
+        description: eventDescription,
+        time: dateTimeEvent,
+        type: 'expense',
+      });
       setEventDescription('');
-      setDateTimeEvent(formattedDate(new Date()));
+      setDateTimeEvent(formatFormDate(new Date()));
       setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
@@ -63,13 +73,13 @@ function ExpenseFormScreen() {
     const newIndex = {
       description: eventDescription,
       amount: parseFloat(inputValueEvent),
-      type: 'Expense',
+      type: 'expense',
       time: dateTimeEvent,
       id: index.id,
     };
 
     setEventDescription('');
-    setDateTimeEvent(formattedDate(new Date()));
+    setDateTimeEvent(formatFormDate(new Date()));
     setInputValueEvent('');
   };
 
@@ -78,13 +88,15 @@ function ExpenseFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        {/* {isNotificationExpense && (
+        {isNotificationExpense && (
           <CustomNotifications
             message={message}
             backgroundColor={'darkred'}
             duration={1500}
+            setIsNotification={setIsNotificationExpense}
+            isNotification={isNotificationExpense}
           />
-        )} */}
+        )}
 
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>

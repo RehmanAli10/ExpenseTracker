@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-const BottomSheetComponent = ({title, titleTwo, amountOne, amountTwo}) => {
+const CustomBottomSheet = ({title, titleTwo, amountOne, amountTwo}) => {
   return (
     <RBSheet
       ref={ref => (this.RBSheet = ref)}
@@ -30,4 +30,4 @@ const BottomSheetComponent = ({title, titleTwo, amountOne, amountTwo}) => {
   );
 };
 
-export default BottomSheetComponent;
+export default CustomBottomSheet;

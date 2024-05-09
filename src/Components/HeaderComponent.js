@@ -9,7 +9,7 @@ function HeaderComponent({headerFirstIcon, text, headerSecondIcon, newIcon}) {
   if (newIcon)
     return (
       <View style={styles.container}>
-        <View style={styles.firtsIconView}>{newIcon}</View>
+        <View style={styles.newIconView}>{newIcon}</View>
       </View>
     );
   return (
@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
   },
   firtsIconView: {
     padding: '6%',
+  },
+  newIconView: {
+    padding: '1%',
   },
   secondIconView: {
     padding: '6%',

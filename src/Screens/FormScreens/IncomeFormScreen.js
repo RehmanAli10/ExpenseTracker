@@ -15,12 +15,16 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import {formatFormDate} from '../../Utils/helpers';
+import {useAddIncome} from './useAddIncome';
 import CustomNotifications from '../../Components/CustomNotifications';
-import {formattedDate} from '../../Utils/helpers';
 
 function IncomeFormScreen() {
   const route = useRoute();
   const {index} = route.params || {};
+
+  const {addIncome, isNotificationIncome, setIsNotificationIncome, message} =
+    useAddIncome();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -31,7 +35,7 @@ function IncomeFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.time : formattedDate(new Date()),
+    index ? index.time : formatFormDate(new Date()),
   );
 
   // date and time states
@@ -44,15 +48,21 @@ function IncomeFormScreen() {
   };
 
   const handleConfirm = date => {
-    const newDate = formattedDate(date);
+    const newDate = formatFormDate(date);
     setDateTimeEvent(newDate);
     hideDatePicker();
   };
 
   const handleAddIncome = () => {
     if (eventDescription && dateTimeEvent && inputValueEvent) {
+      addIncome({
+        amount: inputValueEvent,
+        description: eventDescription,
+        time: dateTimeEvent,
+        type: 'income',
+      });
       setEventDescription('');
-      setDateTimeEvent(formattedDate(new Date()));
+      setDateTimeEvent(formatFormDate(new Date()));
       setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
@@ -63,13 +73,13 @@ function IncomeFormScreen() {
     const newIndex = {
       description: eventDescription,
       amount: parseFloat(inputValueEvent),
-      type: 'Income',
+      type: 'income',
       time: dateTimeEvent,
       id: index.id,
     };
 
     setEventDescription('');
-    setDateTimeEvent(formattedDate(new Date()));
+    setDateTimeEvent(formatFormDate(new Date()));
     setInputValueEvent('');
   };
 
@@ -78,15 +88,15 @@ function IncomeFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        <View style={styles.notification}>
-          {/* {isNotificationIncome && (
-            <CustomNotifications
-              message={message}
-              backgroundColor={'green'}
-              duration={1500}
-            />
-          )} */}
-        </View>
+        {isNotificationIncome && (
+          <CustomNotifications
+            isNotification={isNotificationIncome}
+            setIsNotification={setIsNotificationIncome}
+            message={message}
+            backgroundColor={'green'}
+            duration={1500}
+          />
+        )}
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>
             <Text style={styles.amountHeading}>Description</Text>
@@ -104,8 +114,6 @@ function IncomeFormScreen() {
             <View style={styles.dateTimeBox}>
               <Text style={styles.amountHeading}>Select Date and Time</Text>
 
-              {/* date and time functionality */}
-
               <View>
                 <Text style={styles.dateTimeStyle}>
                   <Text>{dateTimeEvent}</Text>
@@ -117,8 +125,6 @@ function IncomeFormScreen() {
                   onCancel={hideDatePicker}
                 />
               </View>
-
-              {/*  */}
             </View>
           </TouchableOpacity>
           <View style={styles.incomeBox}>
