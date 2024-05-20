@@ -16,7 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import CustomNotifications from '../../Components/CustomNotifications';
-import {formatFormDate} from '../../Utils/helpers';
+import {convertToTimestamptz, formatFormDate} from '../../Utils/helpers';
 import {useAddExpense} from './useAddExpense';
 
 function ExpenseFormScreen() {
@@ -35,7 +35,7 @@ function ExpenseFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.time : formatFormDate(new Date()),
+    index ? index.time : convertToTimestamptz(new Date()),
   );
 
   // date and time functions
@@ -48,7 +48,7 @@ function ExpenseFormScreen() {
   };
 
   const handleConfirm = date => {
-    const newDate = formatFormDate(date);
+    const newDate = convertToTimestamptz(date);
     setDateTimeEvent(newDate);
     hideDatePicker();
   };

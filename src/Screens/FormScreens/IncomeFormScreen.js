@@ -15,7 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {formatFormDate} from '../../Utils/helpers';
+import {convertToTimestamptz, formatFormDate} from '../../Utils/helpers';
 import {useAddIncome} from './useAddIncome';
 import CustomNotifications from '../../Components/CustomNotifications';
 
@@ -35,7 +35,7 @@ function IncomeFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.time : formatFormDate(new Date()),
+    index ? index.time : convertToTimestamptz(new Date()),
   );
 
   // date and time states
@@ -48,7 +48,8 @@ function IncomeFormScreen() {
   };
 
   const handleConfirm = date => {
-    const newDate = formatFormDate(date);
+    const newDate = convertToTimestamptz(date);
+    console.log(newDate);
     setDateTimeEvent(newDate);
     hideDatePicker();
   };
@@ -77,6 +78,7 @@ function IncomeFormScreen() {
       time: dateTimeEvent,
       id: index.id,
     };
+    e;
 
     setEventDescription('');
     setDateTimeEvent(formatFormDate(new Date()));

@@ -1,4 +1,10 @@
-export function formattedDate(createdAt) {
+import {formatISO} from 'date-fns';
+
+export function formatFormDate(createdAt) {
+  return createdAt.toLocaleString();
+}
+
+export function groupTransactionsByMonthYear(transactions) {
   const months = [
     'January',
     'February',
@@ -13,17 +19,19 @@ export function formattedDate(createdAt) {
     'November',
     'December',
   ];
-  const [datePart, timePart] = createdAt.split(',');
 
-  const [date, month, year] = datePart.split('/');
-
-  const monthIndex = parseInt(month, 10) - 1;
-
-  const formattedMonth = months[monthIndex];
-
-  return {formatted: createdAt.toLocaleString(), month: formattedMonth, year};
+  return transactions.reduce((acc, transaction) => {
+    const [year, month] = transaction?.time.split('-');
+    const monthYear = `${months[Number(month) - 1]}, ${year}`;
+    if (!acc[monthYear]) {
+      acc[monthYear] = [];
+    }
+    acc[monthYear].push(transaction);
+    return acc;
+  }, {});
 }
 
-export function formatFormDate(createdAt) {
-  return createdAt.toLocaleString();
+export function convertToTimestamptz(dateString) {
+  const date = new Date(dateString);
+  return formatISO(date, {representation: 'complete'});
 }

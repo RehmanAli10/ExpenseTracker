@@ -10,14 +10,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^8.0.1",
     "@react-navigation/material-top-tabs": "^6.6.13",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@supabase/supabase-js": "^2.43.0",
     "@tanstack/react-query": "^5.32.1",
     "auto": "^11.1.6",
+    "date-fns": "^3.6.0",
     "react": "18.2.0",
-    "react-native": "0.74.0",
+    "react-native": "^0.73.8",
     "react-native-calendars": "^1.1304.1",
     "react-native-element-dropdown": "^2.10.4",
     "react-native-modal-datetime-picker": "^17.1.0",

@@ -16,6 +16,23 @@ export async function addTransaction(formData) {
 
   if (error) {
     console.error(error);
-    throw new error('Error adding Income');
+    throw new error('Error adding Transaction');
   }
+}
+
+export async function editTransaction(editedData) {
+  console.log(editedData);
+
+  const {data, error} = await supabase
+    .from('data')
+    .update(editedData)
+    .eq('id', editedData.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new error('Error adding Transaction');
+  }
+
+  return data;
 }
