@@ -15,16 +15,17 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import CustomNotifications from '../../Components/CustomNotifications';
-import {convertToTimestamptz, formatFormDate} from '../../Utils/helpers';
+import {convertToTimestamptz} from '../../Utils/helpers';
 import {useAddExpense} from './useAddExpense';
+import {useEditTransaction} from './useEditTransaction';
 
 function ExpenseFormScreen() {
   const route = useRoute();
   const {index} = route.params || {};
 
-  const {isNotificationExpense, setIsNotificationExpense, message, addExpense} =
-    useAddExpense();
+  const {addExpense} = useAddExpense();
+
+  const {editTransaction} = useEditTransaction();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -62,7 +63,7 @@ function ExpenseFormScreen() {
         type: 'expense',
       });
       setEventDescription('');
-      setDateTimeEvent(formatFormDate(new Date()));
+      setDateTimeEvent(convertToTimestamptz(new Date()));
       setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
@@ -77,9 +78,10 @@ function ExpenseFormScreen() {
       time: dateTimeEvent,
       id: index.id,
     };
+    editTransaction(newIndex);
 
     setEventDescription('');
-    setDateTimeEvent(formatFormDate(new Date()));
+    setDateTimeEvent(convertToTimestamptz(new Date()));
     setInputValueEvent('');
   };
 
@@ -88,16 +90,6 @@ function ExpenseFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        {isNotificationExpense && (
-          <CustomNotifications
-            message={message}
-            backgroundColor={'darkred'}
-            duration={1500}
-            setIsNotification={setIsNotificationExpense}
-            isNotification={isNotificationExpense}
-          />
-        )}
-
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>
             <Text style={styles.amountHeading}>Description</Text>

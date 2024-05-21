@@ -24,9 +24,9 @@ function IncomeFormScreen() {
   const route = useRoute();
   const {index} = route.params || {};
 
-  const {addIncome, isNotificationIncome, setIsNotificationIncome, message} =
-    useAddIncome();
-  const {isEditing, editTransaction} = useEditTransaction();
+  const {addIncome} = useAddIncome();
+
+  const {editTransaction} = useEditTransaction();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -65,7 +65,7 @@ function IncomeFormScreen() {
         type: 'income',
       });
       setEventDescription('');
-      setDateTimeEvent(formatFormDate(new Date()));
+      setDateTimeEvent(convertToTimestamptz(new Date()));
       setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
@@ -83,7 +83,7 @@ function IncomeFormScreen() {
     editTransaction(newIndex);
 
     setEventDescription('');
-    setDateTimeEvent(formatFormDate(new Date()));
+    setDateTimeEvent(convertToTimestamptz(new Date()));
     setInputValueEvent('');
   };
 
@@ -92,15 +92,6 @@ function IncomeFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        {isNotificationIncome && (
-          <CustomNotifications
-            isNotification={isNotificationIncome}
-            setIsNotification={setIsNotificationIncome}
-            message={message}
-            backgroundColor={'green'}
-            duration={1500}
-          />
-        )}
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>
             <Text style={styles.amountHeading}>Description</Text>

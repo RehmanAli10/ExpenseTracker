@@ -1,33 +1,35 @@
-import {useState} from 'react';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {addTransaction} from '../../Services/apiTransactions';
+import {useToast} from 'react-native-toast-notifications';
 
 export function useAddExpense() {
-  const [isNotificationExpense, setIsNotificationExpense] = useState(false);
-  const [message, setIsMessage] = useState('');
-
   const queryClient = useQueryClient();
+
+  const toast = useToast();
+
   const {mutate: addExpense} = useMutation({
     mutationFn: addTransaction,
     onSuccess: () => {
-      setIsNotificationExpense(true);
-      setIsMessage('Added expense successfully');
+      toast.show('Added expense successfully', {
+        type: 'warning',
+        placement: 'top',
+        duration: 2000,
+      });
       queryClient.invalidateQueries({
         queryKey: ['transactions'],
       });
     },
 
     onError: err => {
-      setIsNotificationExpense(true);
-      setIsMessage(err.message);
+      toast.show(err.message, {
+        type: 'danger',
+        placement: 'top',
+        duration: 2000,
+      });
     },
   });
 
   return {
     addExpense,
-    setIsNotificationExpense,
-    isNotificationExpense,
-    message,
-    setIsMessage,
   };
 }
