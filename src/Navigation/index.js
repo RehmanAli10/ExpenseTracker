@@ -18,6 +18,7 @@ import {
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
+import {ToastProvider} from 'react-native-toast-notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,67 +32,73 @@ const queryClient = new QueryClient({
 
 function Navigation() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={'Home'}>
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegisterContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="income"
-            component={IncomeContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="transactions"
-            component={TransactionContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="IncomeFormScreen"
-            component={IncomeFormScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ExpenseFormScreen"
-            component={ExpenseFormScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Calendar"
-            component={CalendarContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Drawer"
-            component={Drawer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsContainer}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </QueryClientProvider>
+    <ToastProvider
+      successColor="green"
+      duration={2000}
+      placement="top"
+      warningColor="darkred">
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={'Home'}>
+            <Stack.Screen
+              name="Welcome"
+              component={WelcomeContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="income"
+              component={IncomeContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="transactions"
+              component={TransactionContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="IncomeFormScreen"
+              component={IncomeFormScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ExpenseFormScreen"
+              component={ExpenseFormScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Calendar"
+              component={CalendarContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Drawer"
+              component={Drawer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsContainer}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </QueryClientProvider>
+    </ToastProvider>
   );
 }
 export default Navigation;
