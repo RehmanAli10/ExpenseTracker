@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -15,10 +15,16 @@ import Transaction from '../../Components/Transaction';
 
 import {BackIcon} from '../../Assets/Icons';
 import {useTransactions} from './useTransactions';
+import {useDeleteTransaction} from '../FormScreens/useDeleteTransaction';
 
 function TransactionScreen({navigation, handleNavigateBack}) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [detailDescription, setDetailDescription] = useState('');
+
   const {transactions, isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();
+
+  const {deleteTransaction} = useDeleteTransaction();
 
   function handleEdit(editedData) {
     if (editedData.type === 'income') {
@@ -32,6 +38,15 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     }
   }
 
+  function handleDelete(id) {
+    deleteTransaction(id);
+  }
+
+  function handleModal(desc) {
+    setDetailDescription(desc);
+    setModalVisible(true);
+  }
+
   const renderItem = ({item}) => {
     const {id, amount, type, description, time} = item;
 
@@ -43,6 +58,11 @@ function TransactionScreen({navigation, handleNavigateBack}) {
         description={description}
         time={time}
         handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        handleModal={handleModal}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        detailDescription={detailDescription}
       />
     );
   };
