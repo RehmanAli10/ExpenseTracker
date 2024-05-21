@@ -21,7 +21,7 @@ export async function addTransaction(formData) {
 }
 
 export async function editTransaction(editedData) {
-  console.log(editedData);
+  console.log('edited data for supabase', editedData);
 
   const {data, error} = await supabase
     .from('data')

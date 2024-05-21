@@ -21,10 +21,15 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     useTransactions();
 
   function handleEdit(editedData) {
-    console.log(editedData);
-    navigation.navigate('IncomeFormScreen', {
-      index: editedData,
-    });
+    if (editedData.type === 'income') {
+      navigation.navigate('IncomeFormScreen', {
+        index: editedData,
+      });
+    } else {
+      navigation.navigate('ExpenseFormScreen', {
+        index: editedData,
+      });
+    }
   }
 
   const renderItem = ({item}) => {

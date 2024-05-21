@@ -17,6 +17,7 @@ import {
 
 import {convertToTimestamptz, formatFormDate} from '../../Utils/helpers';
 import {useAddIncome} from './useAddIncome';
+import {useEditTransaction} from './useEditTransaction';
 import CustomNotifications from '../../Components/CustomNotifications';
 
 function IncomeFormScreen() {
@@ -25,6 +26,7 @@ function IncomeFormScreen() {
 
   const {addIncome, isNotificationIncome, setIsNotificationIncome, message} =
     useAddIncome();
+  const {isEditing, editTransaction} = useEditTransaction();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -78,7 +80,7 @@ function IncomeFormScreen() {
       time: dateTimeEvent,
       id: index.id,
     };
-    e;
+    editTransaction(newIndex);
 
     setEventDescription('');
     setDateTimeEvent(formatFormDate(new Date()));
