@@ -1,24 +1,46 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
 import {formatFormDate} from '../Utils/helpers';
 
 import ForwardIcon from '../Assets/Icons/ForwardIcon';
 import EditIcon from '../Assets/Icons/EditIcon';
 import {DeleteIcon} from '../Assets/Icons';
 
-function Transaction({id, amount, time, description, type, handleEdit}) {
+import PopUp from './PopUp';
+
+function Transaction({
+  id,
+  amount,
+  time,
+  description,
+  type,
+  handleEdit,
+  handleDelete,
+  handleModal,
+  modalVisible,
+  setModalVisible,
+  detailDescription,
+}) {
   let date = formatFormDate(time).slice(8, 10);
 
-  let updateDesc =
-    description.length > 50 ? `${description.slice(0, 30)}...` : description;
+  const truncateDescription = (desc, maxLength) => {
+    return desc.length > maxLength ? `${desc.slice(0, maxLength)}...` : desc;
+  };
 
   return (
     <>
+      {modalVisible && (
+        <PopUp
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          detailDescription={detailDescription}
+        />
+      )}
+
       {type === 'income' ? (
         <View style={styles.container}>
           <View style={styles.dateDescriptionContainer}>
@@ -27,18 +49,20 @@ function Transaction({id, amount, time, description, type, handleEdit}) {
             </View>
             <View>
               <Text style={styles.incomeAmount}>{amount}</Text>
-              <Text style={styles.incomeDescription}>{updateDesc}</Text>
+              <TouchableOpacity onPress={() => handleModal(description)}>
+                <Text style={styles.incomeDescription}>
+                  {truncateDescription(description, 25)}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.editDeleteView}>
-            {/* <ForwardIcon color={'black'} height={45} width={45} /> */}
             <TouchableOpacity
               onPress={() => handleEdit({id, amount, time, description, type})}>
               <EditIcon height={25} width={25} color={'black'} />
             </TouchableOpacity>
-
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDelete(id)}>
               <DeleteIcon height={25} width={25} color={'red'} />
             </TouchableOpacity>
           </View>
@@ -51,20 +75,20 @@ function Transaction({id, amount, time, description, type, handleEdit}) {
             </View>
             <View>
               <Text style={styles.expenseAmount}>{amount}</Text>
-              <Text style={styles.expenseDescription}>
-                {description.length > 100 ? ` ${updateDesc}...` : description}
-              </Text>
+              <TouchableOpacity onPress={() => handleModal(description)}>
+                <Text style={styles.expenseDescription}>
+                  {truncateDescription(description, 25)}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.editDeleteView}>
-            {/* <ForwardIcon color={'black'} height={45} width={45} /> */}
             <TouchableOpacity
               onPress={() => handleEdit({id, amount, time, description, type})}>
               <EditIcon height={25} width={25} color={'black'} />
             </TouchableOpacity>
-
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDelete(id)}>
               <DeleteIcon height={25} width={25} color={'red'} />
             </TouchableOpacity>
           </View>
