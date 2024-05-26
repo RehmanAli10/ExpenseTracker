@@ -21,13 +21,28 @@ function TransactionScreen({navigation, handleNavigateBack}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [detailDescription, setDetailDescription] = useState('');
 
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+
   const {transactions, isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();
 
   const {deleteTransaction} = useDeleteTransaction();
 
-  function handleEdit(editedData) {
-    if (editedData.type === 'income') {
+  function handleEdit(id) {
+    let newData = Object.values(transactions)
+      .flat(1)
+      .find(currEle => currEle.id === id);
+
+    let editedData = {
+      id: newData.id,
+      amount: newData.amount,
+      description: newData.description,
+      time: newData.time,
+    };
+
+    if (newData.type === 'income') {
       navigation.navigate('IncomeFormScreen', {
         index: editedData,
       });
@@ -42,7 +57,8 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     deleteTransaction(id);
   }
 
-  function handleModal(desc) {
+  function handleModal(desc, id) {
+    setSelectedTransaction(id);
     setDetailDescription(desc);
     setModalVisible(true);
   }
@@ -63,6 +79,9 @@ function TransactionScreen({navigation, handleNavigateBack}) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         detailDescription={detailDescription}
+        deleteModalVisible={deleteModalVisible}
+        setDeleteModalVisible={setDeleteModalVisible}
+        selectedTransaction={selectedTransaction}
       />
     );
   };
@@ -73,7 +92,7 @@ function TransactionScreen({navigation, handleNavigateBack}) {
       <FlatList
         data={item.data}
         renderItem={renderItem}
-        keyExtractor={transaction => transaction.id}
+        keyExtractor={transactions => transactions.id}
       />
     </View>
   );
@@ -95,12 +114,17 @@ function TransactionScreen({navigation, handleNavigateBack}) {
           </TouchableOpacity>
         }
       />
-
-      <FlatList
-        data={groupedTransactions}
-        renderItem={renderGroup}
-        keyExtractor={item => item.monthYear}
-      />
+      {groupedTransactions.length > 0 ? (
+        <FlatList
+          data={groupedTransactions}
+          renderItem={renderGroup}
+          keyExtractor={item => item.monthYear}
+        />
+      ) : (
+        <View style={styles.messageContainer}>
+          <Text style={styles.messageText}>Kindly, Add Transactions 😊</Text>
+        </View>
+      )}
 
       <Button
         title={`Balance: ${totalBalance} RS`}
@@ -123,6 +147,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'lightgrey',
   },
+  messageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   transactionItem: {
     padding: 10,
     borderBottomWidth: 1,
@@ -140,6 +169,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 10,
     fontWeight: 'bold',
+  },
+  messageText: {
+    color: 'black',
+    fontSize: 18,
   },
 });
 
