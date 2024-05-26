@@ -1,16 +1,14 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {formatFormDate} from '../Utils/helpers';
 
-import ForwardIcon from '../Assets/Icons/ForwardIcon';
-import EditIcon from '../Assets/Icons/EditIcon';
-import {DeleteIcon} from '../Assets/Icons';
-
 import PopUp from './PopUp';
+import AlertModal from './AlertModal';
+import ForwardIcon from '../Assets/Icons/ForwardIcon';
 
 function Transaction({
   id,
@@ -24,6 +22,9 @@ function Transaction({
   modalVisible,
   setModalVisible,
   detailDescription,
+  deleteModalVisible,
+  setDeleteModalVisible,
+  selectedTransaction,
 }) {
   let date = formatFormDate(time).slice(8, 10);
 
@@ -38,6 +39,26 @@ function Transaction({
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           detailDescription={detailDescription}
+          handleDelete={handleDelete}
+          id={selectedTransaction}
+          amount={amount}
+          time={time}
+          description={description}
+          type={type}
+          handleEdit={handleEdit}
+          deleteModalVisible={deleteModalVisible}
+          setDeleteModalVisible={setDeleteModalVisible}
+        />
+      )}
+
+      {deleteModalVisible && (
+        <AlertModal
+          deleteModalVisible={deleteModalVisible}
+          setDeleteModalVisible={setDeleteModalVisible}
+          handleDelete={handleDelete}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          id={selectedTransaction}
         />
       )}
 
@@ -49,7 +70,7 @@ function Transaction({
             </View>
             <View>
               <Text style={styles.incomeAmount}>{amount}</Text>
-              <TouchableOpacity onPress={() => handleModal(description)}>
+              <TouchableOpacity onPress={() => handleModal(description, id)}>
                 <Text style={styles.incomeDescription}>
                   {truncateDescription(description, 25)}
                 </Text>
@@ -59,11 +80,11 @@ function Transaction({
 
           <View style={styles.editDeleteView}>
             <TouchableOpacity
-              onPress={() => handleEdit({id, amount, time, description, type})}>
-              <EditIcon height={25} width={25} color={'black'} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDelete(id)}>
-              <DeleteIcon height={25} width={25} color={'red'} />
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                handleModal(description, id);
+              }}>
+              <ForwardIcon color={'black'} height={45} width={45} />
             </TouchableOpacity>
           </View>
         </View>
@@ -75,7 +96,7 @@ function Transaction({
             </View>
             <View>
               <Text style={styles.expenseAmount}>{amount}</Text>
-              <TouchableOpacity onPress={() => handleModal(description)}>
+              <TouchableOpacity onPress={() => handleModal(description, id)}>
                 <Text style={styles.expenseDescription}>
                   {truncateDescription(description, 25)}
                 </Text>
@@ -85,11 +106,11 @@ function Transaction({
 
           <View style={styles.editDeleteView}>
             <TouchableOpacity
-              onPress={() => handleEdit({id, amount, time, description, type})}>
-              <EditIcon height={25} width={25} color={'black'} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDelete(id)}>
-              <DeleteIcon height={25} width={25} color={'red'} />
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                handleModal(description, id);
+              }}>
+              <ForwardIcon color={'black'} height={45} width={45} />
             </TouchableOpacity>
           </View>
         </View>
