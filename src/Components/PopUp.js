@@ -1,124 +1,74 @@
-// import React from 'react';
-// import {
-//   Alert,
-//   Modal,
-//   StyleSheet,
-//   Text,
-//   Pressable,
-//   View,
-//   ScrollView,
-// } from 'react-native';
-
-// function PopUp({modalVisible, setModalVisible, detailDescription}) {
-//   return (
-//     <View style={styles.centeredView}>
-//       <Modal
-//         animationType="slide"
-//         transparent={true}
-//         visible={modalVisible}
-//         onRequestClose={() => {
-//           Alert.alert('Modal has been closed.');
-//           setModalVisible(!modalVisible);
-//         }}>
-//         <View style={styles.centeredView}>
-//           <View style={styles.modalView}>
-//             <Text style={styles.modalText}>{detailDescription}</Text>
-
-//             <Pressable
-//               style={[styles.button, styles.buttonClose]}
-//               onPress={() => setModalVisible(!modalVisible)}>
-//               <Text style={styles.textStyle}>Close</Text>
-//             </Pressable>
-//           </View>
-//         </View>
-//       </Modal>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginTop: 22,
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: 'white',
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: 'center',
-//     shadowColor: '#000',
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-//   button: {
-//     borderRadius: 20,
-//     padding: 10,
-//     elevation: 2,
-//   },
-//   buttonOpen: {
-//     backgroundColor: '#F194FF',
-//   },
-//   buttonClose: {
-//     backgroundColor: '#2196F3',
-//   },
-//   textStyle: {
-//     color: 'white',
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//   },
-//   modalText: {
-//     marginBottom: 15,
-//     textAlign: 'center',
-//   },
-// });
-
-// export default PopUp;
-
 import React from 'react';
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
   Pressable,
   View,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
-function PopUp({modalVisible, setModalVisible, detailDescription}) {
+function PopUp({
+  modalVisible,
+  setModalVisible,
+  detailDescription,
+  handleEdit,
+  id,
+  description,
+  setDeleteModalVisible,
+}) {
+  function handleEditTransaction() {
+    setModalVisible(!modalVisible);
+    handleEdit(id);
+  }
+
+  function deleteTransaction() {
+    setDeleteModalVisible(true);
+  }
+
   return (
     <View style={styles.centeredView}>
       <Modal
-        // animationType="slide"
         animationIn="slideInLeft"
         animationOut="slideOutLeft"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.centeredView}>
-          <Text style={styles.heading}>Description</Text>
-          <View style={styles.modalView}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-              <Text style={styles.modalText}>{detailDescription}</Text>
-            </ScrollView>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
+        <TouchableWithoutFeedback
+          onPress={() => setModalVisible(!modalVisible)}>
+          <View style={styles.centeredView}>
+            <Text style={styles.heading}>Description</Text>
+            <View style={styles.modalView}>
+              <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <Text style={styles.modalText}>
+                  {detailDescription ? detailDescription : description}
+                </Text>
+              </ScrollView>
+              <View style={styles.btnContainer}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Close</Text>
+                </Pressable>
+                <View style={styles.editDeleteConatiner}>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={handleEditTransaction}>
+                    <Text style={styles.textStyle}>Edit</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.button, styles.buttonDelete]}
+                    onPress={deleteTransaction}>
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -129,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Add a semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   heading: {
     color: 'white',
@@ -138,8 +88,8 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 10, // Reduced border radius for a modern look
-    padding: 20, // Adjusted padding for better spacing
+    borderRadius: 10,
+    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -157,13 +107,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    borderRadius: 10, // Reduced border radius for a modern look
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
-    marginTop: 15, // Add margin top to separate the button from the text
+    marginTop: 15,
   },
   buttonClose: {
     backgroundColor: '#2196F3',
+  },
+  buttonDelete: {
+    backgroundColor: 'darkred',
   },
   textStyle: {
     color: 'white',
@@ -171,9 +124,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    fontSize: 16, // Increased font size for better readability
+    fontSize: 16,
     textAlign: 'center',
-    color: '#333', // Use a slightly lighter color for better contrast
+    color: '#333',
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 120,
+  },
+  editDeleteConatiner: {
+    flexDirection: 'row',
+    gap: 10,
   },
 });
 
