@@ -35,7 +35,6 @@ export async function editTransaction(editedData) {
 }
 
 export async function deleteTransaction(id) {
-  console.log('id to supabase', id);
   const {error} = await supabase.from('data').delete().eq('id', id);
 
   if (error) {
