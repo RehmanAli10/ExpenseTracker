@@ -62,59 +62,41 @@ function Transaction({
         />
       )}
 
-      {type === 'income' ? (
-        <View style={styles.container}>
-          <View style={styles.dateDescriptionContainer}>
-            <View style={styles.date}>
-              <Text style={styles.dateText}>{date}</Text>
-            </View>
-            <View>
-              <Text style={styles.incomeAmount}>{amount}</Text>
-              <TouchableOpacity onPress={() => handleModal(description, id)}>
-                <Text style={styles.incomeDescription}>
-                  {truncateDescription(description, 25)}
-                </Text>
-              </TouchableOpacity>
-            </View>
+      <View style={styles.container}>
+        <View style={styles.dateDescriptionContainer}>
+          <View style={styles.date}>
+            <Text style={styles.dateText}>{date}</Text>
           </View>
-
-          <View style={styles.editDeleteView}>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                handleModal(description, id);
-              }}>
-              <ForwardIcon color={'black'} height={45} width={45} />
+          <View>
+            <Text
+              style={
+                type === 'income' ? styles.incomeAmount : styles.expenseAmount
+              }>
+              {amount}
+            </Text>
+            <TouchableOpacity onPress={() => handleModal(description, id)}>
+              <Text
+                style={
+                  type === 'income'
+                    ? styles.incomeDescription
+                    : styles.expenseDescription
+                }>
+                {truncateDescription(description, 25)}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-      ) : (
-        <View style={styles.container}>
-          <View style={styles.dateDescriptionContainer}>
-            <View style={styles.date}>
-              <Text style={styles.dateText}>{date}</Text>
-            </View>
-            <View>
-              <Text style={styles.expenseAmount}>{amount}</Text>
-              <TouchableOpacity onPress={() => handleModal(description, id)}>
-                <Text style={styles.expenseDescription}>
-                  {truncateDescription(description, 25)}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
 
-          <View style={styles.editDeleteView}>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                handleModal(description, id);
-              }}>
-              <ForwardIcon color={'black'} height={45} width={45} />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.editDeleteView}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              handleModal(description, id);
+            }}>
+            <ForwardIcon color={'black'} height={45} width={45} />
+          </TouchableOpacity>
         </View>
-      )}
+      </View>
     </>
   );
 }
