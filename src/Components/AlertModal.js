@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
+    color: 'black',
     marginBottom: 15,
     textAlign: 'center',
   },
