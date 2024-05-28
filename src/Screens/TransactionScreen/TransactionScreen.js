@@ -16,6 +16,8 @@ import Transaction from '../../Components/Transaction';
 import {BackIcon} from '../../Assets/Icons';
 import {useTransactions} from './useTransactions';
 import {useDeleteTransaction} from '../FormScreens/useDeleteTransaction';
+import FilterOptions from '../../Components/FilterOptions';
+import {groupTransactionsByMonthYear} from '../../Utils/helpers';
 
 function TransactionScreen({navigation, handleNavigateBack}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,6 +26,8 @@ function TransactionScreen({navigation, handleNavigateBack}) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+
+  const [filter, setFilter] = useState('all');
 
   const {transactions, isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();
@@ -63,6 +67,10 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     setModalVisible(true);
   }
 
+  function handleFilterChange(newFilter) {
+    setFilter(newFilter);
+  }
+
   const renderItem = ({item}) => {
     const {id, amount, type, description, time} = item;
 
@@ -100,10 +108,54 @@ function TransactionScreen({navigation, handleNavigateBack}) {
   if (isLoading)
     return <ActivityIndicator style={styles.container} size={'large'} />;
 
-  const groupedTransactions = Object.keys(transactions).map(key => ({
-    monthYear: key,
-    data: transactions[key],
-  }));
+  const getFilteredTransactions = () => {
+    let allTransactions = Object.values(transactions).flat(1);
+
+    switch (filter) {
+      case 'income':
+        return allTransactions.filter(
+          transaction => transaction.type === 'income',
+        );
+      case 'expense':
+        return allTransactions.filter(
+          transaction => transaction.type === 'expense',
+        );
+      case 'highestIncome':
+        return allTransactions
+          .filter(transaction => transaction.type === 'income')
+          .sort((a, b) => b.amount - a.amount)
+          .slice(0, 1);
+      case 'lowestIncome':
+        return allTransactions
+          .filter(transaction => transaction.type === 'income')
+          .sort((a, b) => a.amount - b.amount)
+          .slice(0, 1);
+      case 'highestExpense':
+        return allTransactions
+          .filter(transaction => transaction.type === 'expense')
+          .sort((a, b) => b.amount - a.amount)
+          .slice(0, 1);
+      case 'lowestExpense':
+        return allTransactions
+          .filter(transaction => transaction.type === 'expense')
+          .sort((a, b) => a.amount - b.amount)
+          .slice(0, 1);
+      default:
+        return allTransactions;
+    }
+  };
+
+  const filteredTransactions = getFilteredTransactions();
+
+  const groupedTransactions =
+    groupTransactionsByMonthYear(filteredTransactions);
+
+  const groupedTransactionsArray = Object.keys(groupedTransactions).map(
+    key => ({
+      monthYear: key,
+      data: groupedTransactions[key],
+    }),
+  );
 
   return (
     <View style={styles.container}>
@@ -114,9 +166,13 @@ function TransactionScreen({navigation, handleNavigateBack}) {
           </TouchableOpacity>
         }
       />
-      {groupedTransactions.length > 0 ? (
+      <FilterOptions
+        handleFilterChange={handleFilterChange}
+        activeFilter={filter}
+      />
+      {groupedTransactionsArray.length > 0 ? (
         <FlatList
-          data={groupedTransactions}
+          data={groupedTransactionsArray}
           renderItem={renderGroup}
           keyExtractor={item => item.monthYear}
         />
