@@ -8,8 +8,12 @@ import {
 function HeaderComponent({headerFirstIcon, text, headerSecondIcon, newIcon}) {
   if (newIcon)
     return (
-      <View style={styles.container}>
+      <View
+        style={[styles.container, {justifyContent: 'flex-start', gap: 110}]}>
         <View style={styles.newIconView}>{newIcon}</View>
+        <View>
+          <Text style={styles.text}>Transactions</Text>
+        </View>
       </View>
     );
   return (
@@ -41,5 +45,10 @@ const styles = StyleSheet.create({
   },
   secondIconView: {
     padding: '6%',
+  },
+  text: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
