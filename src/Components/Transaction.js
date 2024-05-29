@@ -1,11 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {formatFormDate} from '../Utils/helpers';
-
 import PopUp from './PopUp';
 import AlertModal from './AlertModal';
 import ForwardIcon from '../Assets/Icons/ForwardIcon';
