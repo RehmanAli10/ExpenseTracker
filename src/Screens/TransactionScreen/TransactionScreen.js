@@ -18,9 +18,11 @@ import {useTransactions} from './useTransactions';
 import {useDeleteTransaction} from '../FormScreens/useDeleteTransaction';
 import FilterOptions from '../../Components/FilterOptions';
 import {groupTransactionsByMonthYear} from '../../Utils/helpers';
+import SearchField from '../../Components/SearchField';
 
 function TransactionScreen({navigation, handleNavigateBack}) {
   const [modalVisible, setModalVisible] = useState(false);
+
   const [detailDescription, setDetailDescription] = useState('');
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -28,6 +30,8 @@ function TransactionScreen({navigation, handleNavigateBack}) {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const [filter, setFilter] = useState('all');
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const {transactions, isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();

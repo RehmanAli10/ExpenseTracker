@@ -15,7 +15,7 @@ export function useDeleteTransaction() {
       toast.show('Transaction deleted successfully ', {
         type: 'success',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       });
 
       queryClient.invalidateQueries({
@@ -26,7 +26,7 @@ export function useDeleteTransaction() {
       toast.show(err.message, {
         type: 'danger',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       }),
   });
 

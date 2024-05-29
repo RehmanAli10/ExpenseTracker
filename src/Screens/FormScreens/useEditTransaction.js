@@ -17,7 +17,7 @@ export function useEditTransaction() {
       toast.show('Edited transaction successfully', {
         type: 'success',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       });
       queryClient.invalidateQueries({
         queryKey: ['transactions'],
@@ -29,7 +29,7 @@ export function useEditTransaction() {
       toast.show(err.message, {
         type: 'danger',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       });
     },
   });
