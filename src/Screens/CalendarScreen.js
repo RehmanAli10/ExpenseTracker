@@ -124,14 +124,21 @@ function CalendarScreen() {
         }}
       />
       <View style={styles.transactionList}>
-        {filteredTransactions.length > 0 ? (
+        {filteredTransactions.length === 0 ? (
+          <Text style={styles.notSelectedDateText}>
+            Kindly add transactions{' '}
+            {Object.keys(selected).length > 0 ? selected : '😊'}
+          </Text>
+        ) : filteredTransactions.length > 0 ? (
           <FlatList
             data={filteredTransactions}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}
           />
         ) : (
-          <Text></Text>
+          <Text style={styles.notSelectedDateText}>
+            Kindly select date to see transactions 😊
+          </Text>
         )}
       </View>
     </View>
@@ -158,5 +165,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+  },
+
+  notSelectedDateText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
