@@ -5,14 +5,20 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-function HeaderComponent({headerFirstIcon, text, headerSecondIcon, newIcon}) {
+function HeaderComponent({
+  headerFirstIcon,
+  text,
+  headerSecondIcon,
+  newIcon,
+  headingText,
+}) {
   if (newIcon)
     return (
       <View
         style={[styles.container, {justifyContent: 'flex-start', gap: 110}]}>
         <View style={styles.newIconView}>{newIcon}</View>
         <View>
-          <Text style={styles.text}>Transactions</Text>
+          <Text style={styles.text}>{headingText}</Text>
         </View>
       </View>
     );
