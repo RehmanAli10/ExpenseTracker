@@ -9,6 +9,7 @@ import {
   IncomeContainer,
   TransactionContainer,
   SettingsContainer,
+  ReportsContainer,
 } from '../Container';
 
 import {
@@ -34,7 +35,7 @@ function Navigation() {
   return (
     <ToastProvider
       successColor="green"
-      duration={2000}
+      duration={1000}
       placement="top"
       warningColor="darkred">
       <QueryClientProvider client={queryClient}>
@@ -93,6 +94,11 @@ function Navigation() {
             <Stack.Screen
               name="Settings"
               component={SettingsContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Report"
+              component={ReportsContainer}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

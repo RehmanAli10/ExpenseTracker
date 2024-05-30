@@ -26,6 +26,10 @@ function HomeContainer({navigation}) {
     navigation.navigate('Login');
   };
 
+  const handleNavigateReport = () => {
+    navigation.navigate('Report');
+  };
+
   return (
     <HomeScreen
       handleNavigate={handleNavigate}
@@ -36,6 +40,7 @@ function HomeContainer({navigation}) {
       isDrawerOpen={isDrawerOpen}
       setIsDrawerOpen={setIsDrawerOpen}
       handleNavigateLogin={handleNavigateLogin}
+      handleNavigateReport={handleNavigateReport}
     />
   );
 }

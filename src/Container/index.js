@@ -6,6 +6,7 @@ import LoginContainer from './WelcomeAndLoginContainer/LoginContainer';
 import RegisterContainer from './WelcomeAndLoginContainer/RegisterContainer';
 import CalendarContainer from './CalendarContainer';
 import SettingsContainer from './SettingsContainer';
+import ReportsContainer from './ReportsContainer';
 
 export {
   HomeContainer,
@@ -16,4 +17,5 @@ export {
   RegisterContainer,
   CalendarContainer,
   SettingsContainer,
+  ReportsContainer,
 };

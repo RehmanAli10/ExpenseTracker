@@ -84,7 +84,7 @@ function CalendarScreen() {
     markedDates[date] = {
       selected: true,
       marked: true,
-      selectedColor: 'blue',
+      selectedColor: 'black',
     };
   });
 

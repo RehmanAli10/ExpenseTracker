@@ -22,20 +22,14 @@ import SearchField from '../../Components/SearchField';
 
 function TransactionScreen({navigation, handleNavigateBack}) {
   const [modalVisible, setModalVisible] = useState(false);
-
   const [detailDescription, setDetailDescription] = useState('');
-
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-
   const [filter, setFilter] = useState('all');
-
   const [searchQuery, setSearchQuery] = useState('');
 
   const {transactions, isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();
-
   const {deleteTransaction} = useDeleteTransaction();
 
   function handleEdit(id) {
@@ -75,7 +69,11 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     setFilter(newFilter);
   }
 
-  const renderItem = ({item}) => {
+  function handleSearchQuery(query) {
+    setSearchQuery(query);
+  }
+
+  const renderItem = function ({item}) {
     const {id, amount, type, description, time} = item;
 
     return (
@@ -114,6 +112,16 @@ function TransactionScreen({navigation, handleNavigateBack}) {
 
   const getFilteredTransactions = () => {
     let allTransactions = Object.values(transactions).flat(1);
+
+    if (searchQuery) {
+      allTransactions = allTransactions.filter(
+        transaction =>
+          transaction.description
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          transaction.amount.toString().includes(searchQuery),
+      );
+    }
 
     switch (filter) {
       case 'income':
@@ -169,7 +177,15 @@ function TransactionScreen({navigation, handleNavigateBack}) {
             <BackIcon color={'white'} height={'8%'} width={'8%'} />
           </TouchableOpacity>
         }
+        headingText={'Transactions'}
       />
+
+      <SearchField
+        searchField={searchQuery}
+        setSearchField={setSearchQuery}
+        handleSearchQuery={handleSearchQuery}
+      />
+
       <FilterOptions
         handleFilterChange={handleFilterChange}
         activeFilter={filter}

@@ -27,6 +27,7 @@ function HomeScreen({
   isDrawerOpen,
   setIsDrawerOpen,
   handleNavigateLogin,
+  handleNavigateReport,
 }) {
   return (
     <View style={styles.container}>
@@ -104,6 +105,7 @@ function HomeScreen({
             buttonWidth={wp('86%')}
             buttonHeight={hp('13%')}
             buttonMargin={hp('2%')}
+            onPress={handleNavigateReport}
             backgroundImageSource={require('../Assets/Images/report.png')}
             borderRadius={wp('5%')}
             overlayColor="rgba(0, 0, 0, 0.3)"
