@@ -4,6 +4,7 @@ import {HomeScreen} from '../Screens';
 
 function HomeContainer({navigation}) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const handleNavigate = () => {
     navigation.navigate('income');
   };

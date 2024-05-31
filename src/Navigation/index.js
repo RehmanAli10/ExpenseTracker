@@ -40,7 +40,7 @@ function Navigation() {
       warningColor="darkred">
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName={'Home'}>
+          <Stack.Navigator initialRouteName={'Welcome'}>
             <Stack.Screen
               name="Welcome"
               component={WelcomeContainer}

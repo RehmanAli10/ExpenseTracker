@@ -53,7 +53,6 @@ function HomeScreen({
         }
       />
 
-      {/* logo view */}
       <Drawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
@@ -143,7 +142,7 @@ function HomeScreen({
           />
         </View>
       </View>
-      {/* custom content component */}
+
       <View style={styles.customContentView}>
         <CustomContent />
       </View>

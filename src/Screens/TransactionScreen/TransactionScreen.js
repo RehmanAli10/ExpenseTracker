@@ -110,7 +110,7 @@ function TransactionScreen({navigation, handleNavigateBack}) {
   if (isLoading)
     return <ActivityIndicator style={styles.container} size={'large'} />;
 
-  const getFilteredTransactions = () => {
+  function getFilteredTransactions() {
     let allTransactions = Object.values(transactions).flat(1);
 
     if (searchQuery) {
@@ -155,7 +155,7 @@ function TransactionScreen({navigation, handleNavigateBack}) {
       default:
         return allTransactions;
     }
-  };
+  }
 
   const filteredTransactions = getFilteredTransactions();
 

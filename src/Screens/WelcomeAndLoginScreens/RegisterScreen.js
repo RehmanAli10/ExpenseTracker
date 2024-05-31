@@ -87,10 +87,7 @@ export default function RegisterScreen({handleNavigate, navigation}) {
         </View>
 
         <View style={styles.buttonView}>
-          <TouchableOpacity
-            style={styles.loginButton}
-            activeOpacity={0.8}
-            onPress={handleSignUp}>
+          <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
             <Text style={styles.loginButtonText}>Sign up</Text>
           </TouchableOpacity>
         </View>
