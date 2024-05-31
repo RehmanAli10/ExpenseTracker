@@ -9,22 +9,26 @@ import Charts from '../Components/Charts';
 function ReportScreen({handleNavigateBack}) {
   const {transactions} = useTransactions();
 
-  const getIncomeData = transactions => {
-    const incomeData = {};
+  const getTransactionDataByType = (transactions, type) => {
+    const data = {};
 
     for (const month in transactions) {
+      const foramttedMonth = month.length > 3 ? month.slice(0, 3) : month;
       const monthTransactions = transactions[month];
-      const totalIncome = monthTransactions
-        .filter(transaction => transaction.type === 'income')
+      const totalAmount = monthTransactions
+        .filter(transaction => transaction.type === type)
         .reduce((sum, transaction) => sum + transaction.amount, 0);
 
-      incomeData[month] = totalIncome;
+      if (totalAmount > 0) {
+        data[foramttedMonth] = totalAmount;
+      }
     }
 
-    return incomeData;
+    return data;
   };
 
-  const incomeData = getIncomeData(transactions);
+  const incomeData = getTransactionDataByType(transactions, 'income');
+  const expenseData = getTransactionDataByType(transactions, 'expense');
 
   return (
     <View style={styles.container}>
@@ -38,9 +42,16 @@ function ReportScreen({handleNavigateBack}) {
       />
       <View style={styles.graphContainer}>
         <View style={styles.textContainer}>
-          <Text>Reports by income</Text>
+          <Text style={styles.text}>Reports by income</Text>
         </View>
-        <Charts transactions={incomeData} />
+        <Charts transactions={incomeData} color={'green'} rgba="0, 200, 0" />
+      </View>
+
+      <View style={styles.graphContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Reports by expense</Text>
+        </View>
+        <Charts transactions={expenseData} color={'darkred'} rgba="200, 0, 0" />
       </View>
     </View>
   );
@@ -53,5 +64,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'lightgrey',
   },
-  graphContainer: {},
+  textContainer: {
+    marginBottom: 10,
+    marginLeft: 10,
+  },
+  text: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  graphContainer: {
+    marginTop: 12,
+    marginLeft: 12,
+  },
 });

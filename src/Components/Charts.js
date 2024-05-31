@@ -1,14 +1,13 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions, ScrollView} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 
-function Charts({transactions}) {
+function Charts({transactions, color, rgba}) {
   const data = {
     labels: Object.keys(transactions),
     datasets: [
       {
         data: Object.values(transactions),
-        colors: [(opacity = 1) => `rgba(134, 65, 244, ${opacity})`],
       },
     ],
   };
@@ -16,14 +15,20 @@ function Charts({transactions}) {
   const chartConfig = {
     backgroundGradientFrom: '#f5f5f5',
     backgroundGradientTo: '#f5f5f5',
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    color: (opacity = 1) => `rgba(${rgba}, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.7,
-    decimalPlaces: 0, // Show whole numbers on the chart
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    groupSpacing: 20,
+    decimalPlaces: 0,
     style: {
       borderRadius: 16,
     },
+    propsForBackgroundLines: {
+      strokeDasharray: '',
+    },
+    fillShadowGradient: color,
+    fillShadowGradientOpacity: 1,
   };
 
   const graphStyle = {
@@ -31,28 +36,26 @@ function Charts({transactions}) {
     borderRadius: 16,
   };
 
+  const screenWidth = Dimensions.get('window').width - 32;
+  const dynamicWidth = Math.max(screenWidth, data.labels.length * 50);
+
   return (
-    <View style={styles.container}>
-      <BarChart
-        style={graphStyle}
-        data={data}
-        width={Dimensions.get('window').width - 32} // Added more margin for padding
-        height={300} // Increased height for better visibility
-        yAxisLabel="$"
-        chartConfig={chartConfig}
-        verticalLabelRotation={30}
-      />
-    </View>
+    <ScrollView horizontal>
+      <View style={{width: dynamicWidth}}>
+        <BarChart
+          style={graphStyle}
+          data={data}
+          width={dynamicWidth}
+          height={300}
+          yAxisLabel="$"
+          chartConfig={chartConfig}
+          verticalLabelRotation={0}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff', // Changed background color for better contrast
-  },
-});
+const styles = StyleSheet.create({});
 
 export default Charts;
