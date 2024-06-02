@@ -12,13 +12,26 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BackIcon from '../../Assets/Icons/BackIcon';
+import {useSignUp} from '../../Authentication/useSignup';
+import CustomSpinner from '../../Components/CustomSpinner';
 
 export default function RegisterScreen({handleNavigate, navigation}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [userNameOrEmail, setUserNameOrEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const {signUp, isPending} = useSignUp();
+
+  function handleSignup() {
+    signUp({userName, email, password});
+    setName('');
+    setEmail('');
+    setUserName('');
+    setPassword('');
+    setConfirmPassword('');
+  }
 
   return (
     <ScrollView>
@@ -56,8 +69,8 @@ export default function RegisterScreen({handleNavigate, navigation}) {
             style={styles.input}
             placeholder="Enter a Username"
             placeholderTextColor="gray"
-            value={userNameOrEmail}
-            onChangeText={text => setUserNameOrEmail(text)}
+            value={userName}
+            onChangeText={text => setUserName(text)}
           />
           <Text style={styles.passwordInputText}>Password</Text>
           <TextInput
@@ -87,8 +100,13 @@ export default function RegisterScreen({handleNavigate, navigation}) {
         </View>
 
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
-            <Text style={styles.loginButtonText}>Sign up</Text>
+          <TouchableOpacity
+            style={styles.loginButton}
+            activeOpacity={0.8}
+            onPress={handleSignup}>
+            <Text style={styles.loginButtonText}>
+              {isPending ? <CustomSpinner size={'small'} /> : 'Sign up'}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
