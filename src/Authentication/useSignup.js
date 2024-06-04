@@ -8,19 +8,13 @@ export function useSignUp() {
   const {mutate: signUp, isPending} = useMutation({
     mutationFn: signupUser,
 
-    onSuccess: data =>
-      toast.show('Signed up succesfully', {
-        type: 'success',
-        duration: 1000,
-        placement: 'top',
-      }),
-
-    onError: err =>
+    onError: err => {
       toast.show(err.message, {
         type: 'danger',
         placement: 'top',
         duration: 1000,
-      }),
+      });
+    },
   });
 
   return {signUp, isPending};

@@ -1,22 +1,31 @@
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {signinUser} from '../Services/apiAuth';
 import {useToast} from 'react-native-toast-notifications';
+import {useNavigation} from '@react-navigation/native';
 
 export function userLogin() {
+  const queryClient = useQueryClient();
+
+  const navigation = useNavigation();
+
   const toast = useToast();
 
   const {mutate: logIn, isPending} = useMutation({
-    mutationFn: signinUser,
+    mutationFn: ({email, password}) => signinUser({email, password}),
 
-    onSuccess: () =>
-      toast.show('Signed in successfully', {
-        type: 'success',
-        duration: 1000,
+    onSuccess: user => {
+      queryClient.setQueryData(['user'], user.user);
+      navigation.navigate('Home');
+    },
+
+    onError: err => {
+      toast.show('Provided email or password are incorrect', {
+        type: 'danger',
         placement: 'top',
-      }),
-
-    onError: err => toast.show(err.message),
+        duration: 1000,
+      });
+    },
   });
 
-  return {logIn};
+  return {logIn, isPending};
 }

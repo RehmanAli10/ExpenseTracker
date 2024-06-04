@@ -17,6 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import HeaderComponent from '../Components/HeaderComponent';
 import Drawer from '../Components/Drawer';
+import CustomSpinner from '../Components/CustomSpinner';
 
 function HomeScreen({
   handleNavigate,
@@ -28,7 +29,15 @@ function HomeScreen({
   setIsDrawerOpen,
   handleNavigateLogin,
   handleNavigateReport,
+  logOut,
+  isPending,
 }) {
+  if (isPending)
+    return (
+      <View style={styles.container}>
+        <CustomSpinner size={'large'} color={'lightgrey'} />
+      </View>
+    );
   return (
     <View style={styles.container}>
       <HeaderComponent
@@ -61,6 +70,8 @@ function HomeScreen({
         setIsDrawerOpen={setIsDrawerOpen}
         handleNavigateSetting={handleNavigateSetting}
         handleNavigateLogin={handleNavigateLogin}
+        logOut={logOut}
+        isPending={isPending}
       />
       <View style={styles.logoView}>
         <Image

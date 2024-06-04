@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 
 import {HomeScreen} from '../Screens';
+import {useLogout} from '../Authentication/useLogout';
 
 function HomeContainer({navigation}) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const {logOut, isPending} = useLogout();
 
   const handleNavigate = () => {
     navigation.navigate('income');
@@ -42,6 +45,8 @@ function HomeContainer({navigation}) {
       setIsDrawerOpen={setIsDrawerOpen}
       handleNavigateLogin={handleNavigateLogin}
       handleNavigateReport={handleNavigateReport}
+      logOut={logOut}
+      isPending={isPending}
     />
   );
 }

@@ -1,110 +1,109 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
-import {
-  RegisterContainer,
-  HomeContainer,
-  IncomeContainer,
-  TransactionContainer,
-  SettingsContainer,
-  ReportsContainer,
-} from '../Container';
-
-import {
-  WelcomeContainer,
-  LoginContainer,
-  CalendarContainer,
-} from '../Container';
-import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
+import {WelcomeContainer} from '../Container';
+import {RegisterContainer} from '../Container';
+import {LoginContainer} from '../Container';
+import {HomeContainer} from '../Container';
+import {IncomeContainer} from '../Container';
+import {TransactionContainer} from '../Container';
+import {IncomeFormScreen} from '../Screens';
+import {ExpenseFormScreen} from '../Screens';
+import {CalendarContainer} from '../Container';
 import Drawer from '../Components/Drawer';
-import {ToastProvider} from 'react-native-toast-notifications';
+import {SettingsContainer} from '../Container';
+import {ReportsContainer} from '../Container';
+
+import ProtectedNavigation from '../Components/ProtectedNavigation';
 
 const Stack = createNativeStackNavigator();
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 0,
-    },
-  },
-});
-
 function Navigation() {
   return (
-    <ToastProvider
-      successColor="green"
-      duration={1000}
-      placement="top"
-      warningColor="darkred">
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={'Welcome'}>
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={HomeContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="income"
-              component={IncomeContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="transactions"
-              component={TransactionContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="IncomeFormScreen"
-              component={IncomeFormScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ExpenseFormScreen"
-              component={ExpenseFormScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Calendar"
-              component={CalendarContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Drawer"
-              component={Drawer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsContainer}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Report"
-              component={ReportsContainer}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </QueryClientProvider>
-    </ToastProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={'Welcome'}>
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeContainer}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterContainer}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginContainer}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Home" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <HomeContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="income" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <IncomeContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="transactions" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <TransactionContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="IncomeFormScreen" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <IncomeFormScreen {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="ExpenseFormScreen" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <ExpenseFormScreen {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Calendar" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <CalendarContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Drawer" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <Drawer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Settings" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <SettingsContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Report" options={{headerShown: false}}>
+          {props => (
+            <ProtectedNavigation>
+              <ReportsContainer {...props} />
+            </ProtectedNavigation>
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
 export default Navigation;

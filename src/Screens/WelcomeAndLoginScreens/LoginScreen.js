@@ -11,17 +11,34 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {BackIcon, GoogleIcon} from '../../Assets/Icons';
 
+import {BackIcon, GoogleIcon} from '../../Assets/Icons';
+import {userLogin} from '../../Authentication/userLogin';
+import CustomSpinner from '../../Components/CustomSpinner';
+import {googleLogin} from '../../Services/apiAuth';
 
 export default function LoginScreen({
   handleNavigateBack,
   handleNavigatetoRegister,
-
 }) {
-  const [userNameOrEmail, setUserNameOrEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const {logIn, isPending} = userLogin();
+
+  function handleSignIn() {
+    if (!email || !password) return;
+
+    logIn(
+      {email, password},
+      {
+        onSettled: () => {
+          setEmail('');
+          setPassword('');
+        },
+      },
+    );
+  }
 
   return (
     <>
@@ -40,13 +57,13 @@ export default function LoginScreen({
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.usernameInputText}>Username or Email</Text>
+            <Text style={styles.usernameInputText}>Email</Text>
             <TextInput
               style={styles.input}
-              value={userNameOrEmail}
+              value={email}
               placeholder="Enter a Username"
               placeholderTextColor="gray"
-              onChangeText={text => setUserNameOrEmail(text)}
+              onChangeText={text => setEmail(text)}
             />
             <Text style={styles.passwordInputText}>Password</Text>
             <TextInput
@@ -66,7 +83,7 @@ export default function LoginScreen({
 
           <View style={styles.iconContainer}>
             <View style={styles.innerIconContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={googleLogin}>
                 <GoogleIcon height={hp('4%')} width={wp('10')} />
               </TouchableOpacity>
             </View>
@@ -81,8 +98,17 @@ export default function LoginScreen({
             </TouchableOpacity>
           </View>
           <View style={styles.buttonView}>
-            <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
-              <Text style={styles.loginButtonText}>Login</Text>
+            <TouchableOpacity
+              style={styles.loginButton}
+              activeOpacity={0.8}
+              onPress={handleSignIn}>
+              <Text style={styles.loginButtonText}>
+                {isPending ? (
+                  <CustomSpinner size={'small'} color={'lightgrey'} />
+                ) : (
+                  'Login'
+                )}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   usernameInputText: {
-    marginRight: wp('55%'),
+    marginRight: wp('75%'),
     color: 'black',
     fontWeight: 'bold',
   },

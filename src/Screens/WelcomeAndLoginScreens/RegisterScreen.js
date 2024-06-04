@@ -25,12 +25,18 @@ export default function RegisterScreen({handleNavigate, navigation}) {
   const {signUp, isPending} = useSignUp();
 
   function handleSignup() {
-    signUp({userName, email, password});
-    setName('');
-    setEmail('');
-    setUserName('');
-    setPassword('');
-    setConfirmPassword('');
+    signUp(
+      {email, password},
+      {
+        onSettled: () => {
+          setName('');
+          setEmail('');
+          setUserName('');
+          setPassword('');
+          setConfirmPassword('');
+        },
+      },
+    );
   }
 
   return (
@@ -63,14 +69,6 @@ export default function RegisterScreen({handleNavigate, navigation}) {
             placeholderTextColor="gray"
             value={email}
             onChangeText={text => setEmail(text)}
-          />
-          <Text style={styles.usernameInputText}>Username or Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter a Username"
-            placeholderTextColor="gray"
-            value={userName}
-            onChangeText={text => setUserName(text)}
           />
           <Text style={styles.passwordInputText}>Password</Text>
           <TextInput

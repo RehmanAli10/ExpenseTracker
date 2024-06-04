@@ -24,6 +24,8 @@ function Drawer({
   handleNavigateCalendar,
   handleNavigateSetting,
   setIsDrawerOpen,
+  logOut,
+  isPending,
 }) {
   return (
     <Modal
@@ -101,7 +103,7 @@ function Drawer({
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={logOut}>
                 <View style={styles.drawerContent}>
                   <LogoutIcon
                     height={hp('3%')}
