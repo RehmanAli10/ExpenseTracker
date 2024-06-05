@@ -40,6 +40,10 @@ export default function LoginScreen({
     );
   }
 
+  function handleGoogleLogin() {
+    googleLogin();
+  }
+
   return (
     <>
       <ScrollView>
@@ -83,7 +87,7 @@ export default function LoginScreen({
 
           <View style={styles.iconContainer}>
             <View style={styles.innerIconContainer}>
-              <TouchableOpacity onPress={googleLogin}>
+              <TouchableOpacity onPress={handleGoogleLogin}>
                 <GoogleIcon height={hp('4%')} width={wp('10')} />
               </TouchableOpacity>
             </View>

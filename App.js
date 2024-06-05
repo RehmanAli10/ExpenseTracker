@@ -4,6 +4,7 @@ import {ToastProvider} from 'react-native-toast-notifications';
 
 import Navigation from './src/Navigation';
 import SplashScreen from './src/Components/SplashScreen';
+import {NavigationContainer} from '@react-navigation/native';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +31,13 @@ function App() {
       placement="top"
       warningColor="darkred">
       <QueryClientProvider client={queryClient}>
-        {isSplashVisible ? <SplashScreen /> : <Navigation />}
+        {isSplashVisible ? (
+          <SplashScreen />
+        ) : (
+          <NavigationContainer>
+            <Navigation />
+          </NavigationContainer>
+        )}
       </QueryClientProvider>
     </ToastProvider>
   );

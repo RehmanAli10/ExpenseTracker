@@ -39,10 +39,8 @@ function ProtectedNavigation({children}) {
   }
 
   if (isAuthenticated) {
-    return children;
+    return <>{children}</>;
   }
-
-  return null;
 }
 
 export default ProtectedNavigation;

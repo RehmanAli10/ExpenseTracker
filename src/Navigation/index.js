@@ -1,108 +1,117 @@
-import React from 'react';
+import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
 
-import {WelcomeContainer} from '../Container';
-import {RegisterContainer} from '../Container';
-import {LoginContainer} from '../Container';
-import {HomeContainer} from '../Container';
-import {IncomeContainer} from '../Container';
-import {TransactionContainer} from '../Container';
-import {IncomeFormScreen} from '../Screens';
-import {ExpenseFormScreen} from '../Screens';
-import {CalendarContainer} from '../Container';
+import {useEffect, useState} from 'react';
+
+import {
+  WelcomeContainer,
+  RegisterContainer,
+  LoginContainer,
+  HomeContainer,
+  IncomeContainer,
+  TransactionContainer,
+  CalendarContainer,
+  SettingsContainer,
+  ReportsContainer,
+} from '../Container';
+import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
-import {SettingsContainer} from '../Container';
-import {ReportsContainer} from '../Container';
-
-import ProtectedNavigation from '../Components/ProtectedNavigation';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const value = await AsyncStorage.getItem('session');
+        if (value === 'true') {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error('Failed to load session', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  console.log(isAuthenticated);
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Welcome'}>
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeContainer}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterContainer}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginContainer}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen name="Home" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <HomeContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="income" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <IncomeContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="transactions" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <TransactionContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="IncomeFormScreen" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <IncomeFormScreen {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="ExpenseFormScreen" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <ExpenseFormScreen {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Calendar" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <CalendarContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Drawer" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <Drawer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Settings" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <SettingsContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Report" options={{headerShown: false}}>
-          {props => (
-            <ProtectedNavigation>
-              <ReportsContainer {...props} />
-            </ProtectedNavigation>
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName={
+        isAuthenticated ? <HomeContainer /> : <WelcomeContainer />
+      }>
+      <Stack.Screen
+        name="Home"
+        options={{headerShown: false}}
+        component={HomeContainer}
+      />
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeContainer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterContainer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginContainer}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="income"
+        options={{headerShown: false}}
+        component={IncomeContainer}
+      />
+      <Stack.Screen
+        name="transactions"
+        options={{headerShown: false}}
+        component={TransactionContainer}
+      />
+
+      <Stack.Screen
+        name="IncomeFormScreen"
+        options={{headerShown: false}}
+        component={IncomeFormScreen}
+      />
+
+      <Stack.Screen
+        name="ExpenseFormScreen"
+        options={{headerShown: false}}
+        component={ExpenseFormScreen}
+      />
+
+      <Stack.Screen
+        name="Calendar"
+        options={{headerShown: false}}
+        component={CalendarContainer}
+      />
+
+      <Stack.Screen
+        name="Drawer"
+        options={{headerShown: false}}
+        component={Drawer}
+      />
+
+      <Stack.Screen
+        name="Settings"
+        options={{headerShown: false}}
+        component={SettingsContainer}
+      />
+
+      <Stack.Screen
+        name="Report"
+        options={{headerShown: false}}
+        component={ReportsContainer}
+      />
+    </Stack.Navigator>
   );
 }
 

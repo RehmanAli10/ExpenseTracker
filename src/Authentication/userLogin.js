@@ -15,7 +15,7 @@ export function userLogin() {
 
     onSuccess: user => {
       queryClient.setQueryData(['user'], user.user);
-      navigation.navigate('Home');
+      navigation.navigate('Home', {replace: true});
     },
 
     onError: err => {

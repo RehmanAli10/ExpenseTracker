@@ -1,4 +1,5 @@
 import {formatISO} from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function formatFormDate(createdAt) {
   return createdAt.toLocaleString();
@@ -34,4 +35,16 @@ export function groupTransactionsByMonthYear(transactions) {
 export function convertToTimestamptz(dateString) {
   const date = new Date(dateString);
   return formatISO(date, {representation: 'complete'});
+}
+
+async function checkSession() {
+  try {
+    const sessionData = await AsyncStorage.getItem('session');
+    if (sessionData) {
+      const session = JSON.parse(sessionData);
+      await supabase.auth.signIn(session.access_token);
+    }
+  } catch (error) {
+    console.error('Error checking session:', error);
+  }
 }
