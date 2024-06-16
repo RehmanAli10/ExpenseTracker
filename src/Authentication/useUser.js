@@ -9,9 +9,10 @@ export function useUser() {
   } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
+    onError: err => {
+      console.error('Error fetching user:', err);
+    },
   });
-
-  console.log('useUser', user?.role);
 
   return {user, isLoading, isAuthenticated: user?.role === 'authenticated'};
 }
