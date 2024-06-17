@@ -1,106 +1,3 @@
-// import * as React from 'react';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-// import {useUser} from '../Authentication/useUser';
-// import {
-//   WelcomeContainer,
-//   RegisterContainer,
-//   LoginContainer,
-//   HomeContainer,
-//   IncomeContainer,
-//   TransactionContainer,
-//   CalendarContainer,
-//   SettingsContainer,
-//   ReportsContainer,
-// } from '../Container';
-// import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
-// import Drawer from '../Components/Drawer';
-// import {useAsyncstorage} from '../CustomHooks/useAsyncstorage';
-
-// const Stack = createNativeStackNavigator();
-
-// function Navigation() {
-//   const {isAuthenticated} = useUser();
-//   // const {user} = useAsyncstorage(false, 'session');
-
-//   const [authenticated, setAuthenticated] = React.useState(function () {
-//     const {user} = useAsyncstorage(false, 'session');
-//     return user;
-//   });
-
-//   console.log('isAuthenticated', isAuthenticated);
-//   console.log('user', authenticated);
-
-//   return (
-//     <Stack.Navigator
-//       initialRouteName={isAuthenticated || authenticated ? 'Home' : 'Welcome'}>
-//       <Stack.Screen
-//         name="Welcome"
-//         component={WelcomeContainer}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Register"
-//         component={RegisterContainer}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Login"
-//         component={LoginContainer}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Home"
-//         options={{headerShown: false}}
-//         component={HomeContainer}
-//       />
-//       <Stack.Screen
-//         name="income"
-//         options={{headerShown: false}}
-//         component={IncomeContainer}
-//       />
-//       <Stack.Screen
-//         name="transactions"
-//         options={{headerShown: false}}
-//         component={TransactionContainer}
-//       />
-//       <Stack.Screen
-//         name="IncomeFormScreen"
-//         options={{headerShown: false}}
-//         component={IncomeFormScreen}
-//       />
-//       <Stack.Screen
-//         name="ExpenseFormScreen"
-//         options={{headerShown: false}}
-//         component={ExpenseFormScreen}
-//       />
-//       <Stack.Screen
-//         name="Calendar"
-//         options={{headerShown: false}}
-//         component={CalendarContainer}
-//       />
-//       <Stack.Screen
-//         name="Drawer"
-//         options={{headerShown: false}}
-//         component={Drawer}
-//       />
-//       <Stack.Screen
-//         name="Settings"
-//         options={{headerShown: false}}
-//         component={SettingsContainer}
-//       />
-//       <Stack.Screen
-//         name="Report"
-//         options={{headerShown: false}}
-//         component={ReportsContainer}
-//       />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export default Navigation;
-
-// Navigation.js
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useUser} from '../Authentication/useUser';
@@ -117,25 +14,41 @@ import {
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
-import {useAsyncStorage} from '../CustomHooks/useAsyncstorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSpinner from '../Components/CustomSpinner';
 
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
   const {isAuthenticated} = useUser();
-  const {data: authenticated, isLoading} = useAsyncStorage('session', false);
+  const [authenticated, setAuthenticated] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
-  if (isLoading) {
-    return <CustomSpinner size={'large'} color={'lightgrey'} />; // Render a loading indicator if data is still loading
+  React.useEffect(() => {
+    async function checkingSession() {
+      try {
+        const value = await AsyncStorage.getItem('session');
+        console.log('value', value);
+        if (value === 'true') {
+          setAuthenticated(true);
+        }
+      } catch (e) {
+        console.error('Error reading session from AsyncStorage', e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    checkingSession();
+  }, []);
+
+  if (loading) {
+    // You can return a loading spinner or null while checking the session
+    return <CustomSpinner color={'lightgrey'} size={'large'} />;
   }
-
-  console.log('isAuthenticated', isAuthenticated);
-  console.log('authenticated', authenticated);
 
   // Determine initial route based on authentication state
   const initialRouteName =
-    isAuthenticated || authenticated ? 'Home' : 'Welcome';
+    authenticated || isAuthenticated ? 'Home' : 'Welcome';
 
   return (
     <Stack.Navigator initialRouteName={initialRouteName}>

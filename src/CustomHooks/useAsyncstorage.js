@@ -9,9 +9,11 @@ export function useAsyncStorage(key, initialState) {
     async function fetchData() {
       try {
         const value = await AsyncStorage.getItem(key);
-        console.log('value async storage', value);
+        console.log('aync storage', value);
         if (value !== null) {
-          setData(value === 'true');
+          setData(true);
+        } else {
+          setData(false);
         }
       } catch (error) {
         console.error('Error fetching data from AsyncStorage:', error);

@@ -15,7 +15,6 @@ import {
 import {BackIcon, GoogleIcon} from '../../Assets/Icons';
 import {userLogin} from '../../Authentication/userLogin';
 import CustomSpinner from '../../Components/CustomSpinner';
-import {googleLogin} from '../../Services/apiAuth';
 
 export default function LoginScreen({
   handleNavigateBack,
@@ -40,9 +39,7 @@ export default function LoginScreen({
     );
   }
 
-  function handleGoogleLogin() {
-    googleLogin();
-  }
+  function handleGoogleLogin() {}
 
   return (
     <>
