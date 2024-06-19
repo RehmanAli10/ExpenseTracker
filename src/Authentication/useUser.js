@@ -15,13 +15,5 @@ export async function useUser() {
     },
   });
 
-  console.log('useUser', user);
-
-  if (user)
-    await AsyncStorage.setItem(
-      'session',
-      user?.role === 'authenticated' ? 'true' : 'false',
-    );
-
   return {user, isLoading, isAuthenticated: user?.role === 'authenticated'};
 }

@@ -14,41 +14,13 @@ import {
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomSpinner from '../Components/CustomSpinner';
 
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
   const {isAuthenticated} = useUser();
-  const [authenticated, setAuthenticated] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    async function checkingSession() {
-      try {
-        const value = await AsyncStorage.getItem('session');
-        console.log('value', value);
-        if (value === 'true') {
-          setAuthenticated(true);
-        }
-      } catch (e) {
-        console.error('Error reading session from AsyncStorage', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    checkingSession();
-  }, []);
-
-  if (loading) {
-    // You can return a loading spinner or null while checking the session
-    return <CustomSpinner color={'lightgrey'} size={'large'} />;
-  }
-
-  // Determine initial route based on authentication state
-  const initialRouteName =
-    authenticated || isAuthenticated ? 'Home' : 'Welcome';
+  const initialRouteName = isAuthenticated ? 'Home' : 'Welcome';
 
   return (
     <Stack.Navigator initialRouteName={initialRouteName}>

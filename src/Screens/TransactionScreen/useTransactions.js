@@ -23,7 +23,7 @@ export function useTransactions() {
 
   let totalBalance = totalIncome - totalExpense;
 
-  // Group transactions by month and year
+  // Grouped transactions by month and year
   const groupedTransactions = transactions
     ? groupTransactionsByMonthYear(transactions)
     : {};
