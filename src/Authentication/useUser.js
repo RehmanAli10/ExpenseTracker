@@ -1,8 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import {getCurrentUser} from '../Services/apiAuth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export async function useUser() {
+export function useUser() {
   const {
     data: user,
     isLoading,

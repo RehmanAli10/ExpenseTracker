@@ -29,8 +29,6 @@ export async function signinUser({email, password}) {
 
 export async function signOut() {
   try {
-    await AsyncStorage.removeItem('session');
-
     const {error} = await supabase.auth.signOut();
     if (error) throw new Error(error.message);
   } catch (error) {

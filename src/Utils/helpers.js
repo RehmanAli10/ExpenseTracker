@@ -1,5 +1,4 @@
 import {formatISO} from 'date-fns';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function formatFormDate(createdAt) {
   return createdAt.toLocaleString();
@@ -35,4 +34,28 @@ export function groupTransactionsByMonthYear(transactions) {
 export function convertToTimestamptz(dateString) {
   const date = new Date(dateString);
   return formatISO(date, {representation: 'complete'});
+}
+
+export function getTransactionDataByType(transactions, type) {
+  const data = {};
+  let cumulativeAmount = 0;
+
+  for (const month in transactions) {
+    const formattedMonth = month.length > 3 ? month.slice(0, 3) : month;
+    const monthTransactions = transactions[month];
+
+    const totalAmount = monthTransactions
+      .filter(transaction => transaction.type === type)
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    if (totalAmount > 0) {
+      cumulativeAmount += totalAmount;
+      if (!data[formattedMonth]) {
+        data[formattedMonth] = [];
+      }
+      data[formattedMonth].push(cumulativeAmount);
+    }
+  }
+
+  return data;
 }

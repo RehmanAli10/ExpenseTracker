@@ -1,37 +1,48 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import HeaderComponent from '../Components/HeaderComponent';
 import {BackIcon} from '../Assets/Icons';
 
 import {useTransactions} from './TransactionScreen/useTransactions';
 import Charts from '../Components/Charts';
+import CircularProgress from '../Components/CircularProgress';
+import {getTransactionDataByType} from '../Utils/helpers';
 
 function ReportScreen({handleNavigateBack}) {
   const {transactions} = useTransactions();
 
-  const getTransactionDataByType = (transactions, type) => {
-    const data = {};
+  function circularProgressData(transact) {
+    const data = [];
 
-    for (const month in transactions) {
-      const foramttedMonth = month.length > 3 ? month.slice(0, 3) : month;
-      const monthTransactions = transactions[month];
-      const totalAmount = monthTransactions
-        .filter(transaction => transaction.type === type)
-        .reduce((sum, transaction) => sum + transaction.amount, 0);
+    for (let trans in transact) {
+      console.log('trans', transact[trans]);
 
-      if (totalAmount > 0) {
-        data[foramttedMonth] = totalAmount;
-      }
+      transact[trans].map(function (currEle) {
+        data.push({
+          name: trans,
+          amount: currEle.amount,
+          description: currEle.description,
+          color: currEle.type === 'income' ? 'green' : 'darkred',
+        });
+      });
     }
-
     return data;
-  };
+  }
 
+  const circularData = circularProgressData(transactions);
+
+  console.log('circular data', circularData);
   const incomeData = getTransactionDataByType(transactions, 'income');
   const expenseData = getTransactionDataByType(transactions, 'expense');
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <HeaderComponent
         newIcon={
           <TouchableOpacity onPress={handleNavigateBack}>
@@ -40,20 +51,56 @@ function ReportScreen({handleNavigateBack}) {
         }
         headingText={'Reports'}
       />
+
+      {Object.entries(incomeData).length === 0 &&
+        Object.entries(expenseData).length === 0 && (
+          <View style={styles.messageContainer}>
+            <Text style={styles.messageText}>Kindly, Add Transactions 😊</Text>
+          </View>
+        )}
+
       <View style={styles.graphContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>Reports by income</Text>
-        </View>
-        <Charts transactions={incomeData} color={'green'} rgba="0, 200, 0" />
+        {Object.entries(incomeData).length > 0 && (
+          <>
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>Reports by income</Text>
+            </View>
+            <Charts
+              transactions={incomeData}
+              color={'green'}
+              rgba="0, 200, 0"
+            />
+          </>
+        )}
       </View>
 
       <View style={styles.graphContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>Reports by expense</Text>
-        </View>
-        <Charts transactions={expenseData} color={'darkred'} rgba="200, 0, 0" />
+        {Object.entries(expenseData).length > 0 && (
+          <>
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>Reports by expense</Text>
+            </View>
+            <Charts
+              transactions={expenseData}
+              color={'darkred'}
+              rgba="200, 0, 0"
+            />
+          </>
+        )}
       </View>
-    </View>
+
+      <View style={styles.graphContainer}>
+        {Object.entries(expenseData).length > 0 ||
+          (Object.entries(incomeData).length > 0 && (
+            <>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>Report income and expense</Text>
+              </View>
+              <CircularProgress transactions={circularData} />
+            </>
+          ))}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -72,6 +119,15 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  messageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  messageText: {
+    color: 'black',
+    fontSize: 18,
   },
   graphContainer: {
     marginTop: 12,

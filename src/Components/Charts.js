@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Dimensions, ScrollView} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 
 function Charts({transactions, color, rgba}) {
+  const labels = Object.keys(transactions);
+  const dataPoints = Object.values(transactions);
+
   const data = {
-    labels: Object.keys(transactions),
+    labels: labels,
     datasets: [
       {
-        data: Object.values(transactions),
+        data: dataPoints,
       },
     ],
   };

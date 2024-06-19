@@ -15,10 +15,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {convertToTimestamptz, formatFormDate} from '../../Utils/helpers';
+import {convertToTimestamptz} from '../../Utils/helpers';
 import {useAddIncome} from './useAddIncome';
 import {useEditTransaction} from './useEditTransaction';
-import CustomNotifications from '../../Components/CustomNotifications';
+import {useUser} from '../../Authentication/useUser';
 
 function IncomeFormScreen() {
   const route = useRoute();
@@ -27,6 +27,8 @@ function IncomeFormScreen() {
   const {addIncome} = useAddIncome();
 
   const {editTransaction} = useEditTransaction();
+
+  const {user} = useUser();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -63,6 +65,7 @@ function IncomeFormScreen() {
         description: eventDescription,
         time: dateTimeEvent,
         type: 'income',
+        UserUID: user.id,
       });
       setEventDescription('');
       setDateTimeEvent(convertToTimestamptz(new Date()));

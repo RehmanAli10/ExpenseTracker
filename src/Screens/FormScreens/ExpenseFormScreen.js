@@ -18,6 +18,7 @@ import {
 import {convertToTimestamptz} from '../../Utils/helpers';
 import {useAddExpense} from './useAddExpense';
 import {useEditTransaction} from './useEditTransaction';
+import {useUser} from '../../Authentication/useUser';
 
 function ExpenseFormScreen() {
   const route = useRoute();
@@ -26,6 +27,8 @@ function ExpenseFormScreen() {
   const {addExpense} = useAddExpense();
 
   const {editTransaction} = useEditTransaction();
+
+  const {user} = useUser();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -61,6 +64,7 @@ function ExpenseFormScreen() {
         description: eventDescription,
         time: dateTimeEvent,
         type: 'expense',
+        UserUID: user.id,
       });
       setEventDescription('');
       setDateTimeEvent(convertToTimestamptz(new Date()));

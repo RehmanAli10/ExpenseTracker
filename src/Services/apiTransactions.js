@@ -4,11 +4,8 @@ export async function getTransactions() {
   let {data, error} = await supabase.from('data').select('*');
 
   if (error) {
-    console.log('error loading transactions', error);
     throw new Error('Error loading Transactions');
   }
-
-  console.log(data);
 
   return data;
 }
@@ -22,8 +19,6 @@ export async function addTransaction(formData) {
 }
 
 export async function editTransaction(editedData) {
-  console.log('edited data for supabase', editedData);
-
   const {data, error} = await supabase
     .from('data')
     .update(editedData)
