@@ -19,6 +19,7 @@ import CustomSpinner from '../../Components/CustomSpinner';
 export default function LoginScreen({
   handleNavigateBack,
   handleNavigatetoRegister,
+  hanldeNavigatetoForgotpassword,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,79 +43,91 @@ export default function LoginScreen({
   function handleGoogleLogin() {}
 
   return (
-    <>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.backIconView}>
-            <TouchableOpacity onPress={handleNavigateBack}>
-              <BackIcon height={hp('4%')} width={wp('10%')} color="black" />
-            </TouchableOpacity>
-          </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.backIconView}>
+        <TouchableOpacity onPress={handleNavigateBack}>
+          <BackIcon height={hp('4%')} width={wp('10%')} color="black" />
+        </TouchableOpacity>
+      </View>
 
-          <View style={styles.headingView}>
-            <Text style={styles.headingOne}>Let's Sign you in.</Text>
-            <Text style={styles.headingTwo}>Welcome back</Text>
-            <Text style={styles.headingThree}>You have been missed!</Text>
-          </View>
+      <View style={styles.headingView}>
+        <Text style={styles.headingOne}>Let's Sign you in.</Text>
+        <Text style={styles.headingTwo}>Welcome back</Text>
+        <Text style={styles.headingThree}>You have been missed!</Text>
+      </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.usernameInputText}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              placeholder="Enter a Username"
-              placeholderTextColor="gray"
-              onChangeText={text => setEmail(text)}
-            />
-            <Text style={styles.passwordInputText}>Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Password"
-              placeholderTextColor="gray"
-              secureTextEntry
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-          </View>
-          <View style={styles.lineContainer}>
-            <View style={styles.line}></View>
-            <Text style={styles.lineText}>Or</Text>
-            <View style={styles.line}></View>
-          </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.usernameInputText}>Email</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder="Enter a Email"
+          placeholderTextColor="gray"
+          onChangeText={text => setEmail(text)}
+        />
+        <Text style={styles.passwordInputText}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Password"
+          placeholderTextColor="gray"
+          secureTextEntry
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
+      </View>
+      <View style={styles.lineContainer}>
+        <View style={styles.line}></View>
+        <Text style={styles.lineText}>Or</Text>
+        <View style={styles.line}></View>
+      </View>
 
-          <View style={styles.iconContainer}>
-            <View style={styles.innerIconContainer}>
-              <TouchableOpacity onPress={handleGoogleLogin}>
-                <GoogleIcon height={hp('4%')} width={wp('10')} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={styles.registerButtonView}>
-            <Text>Don't have an account?</Text>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={handleNavigatetoRegister}>
-              <Text style={styles.registerButtonText}>Register</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonView}>
-            <TouchableOpacity
-              style={styles.loginButton}
-              activeOpacity={0.8}
-              onPress={handleSignIn}>
-              <Text style={styles.loginButtonText}>
-                {isPending ? (
-                  <CustomSpinner size={'small'} color={'lightgrey'} />
-                ) : (
-                  'Login'
-                )}
-              </Text>
-            </TouchableOpacity>
-          </View>
+      <View style={styles.iconContainer}>
+        <View style={styles.innerIconContainer}>
+          <TouchableOpacity onPress={handleGoogleLogin}>
+            <GoogleIcon height={hp('4%')} width={wp('10')} />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </>
+      </View>
+
+      <View
+        style={
+          (styles.registerButtonView,
+          [
+            {marginTop: hp('5%')},
+            {justifyContent: 'center', alignItems: 'center'},
+          ])
+        }>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={hanldeNavigatetoForgotpassword}>
+          <Text style={styles.registerButtonText}>Forgot password?</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.registerButtonView}>
+        <Text>Don't have an account?</Text>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleNavigatetoRegister}>
+          <Text style={styles.registerButtonText}>Register</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          activeOpacity={0.8}
+          onPress={handleSignIn}>
+          <Text style={styles.loginButtonText}>
+            {isPending ? (
+              <CustomSpinner size={'small'} color={'lightgrey'} />
+            ) : (
+              'Login'
+            )}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -196,7 +209,7 @@ const styles = StyleSheet.create({
   },
 
   registerButtonView: {
-    marginTop: hp('11%'),
+    marginTop: hp('5%'),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

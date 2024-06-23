@@ -12,34 +12,17 @@ import {BackIcon} from '../Assets/Icons';
 import {useTransactions} from './TransactionScreen/useTransactions';
 import Charts from '../Components/Charts';
 import CircularProgress from '../Components/CircularProgress';
-import {getTransactionDataByType} from '../Utils/helpers';
+import {
+  getTransactionDataByType,
+  formatCircularPiechartData,
+} from '../Utils/helpers';
 
 function ReportScreen({handleNavigateBack}) {
   const {transactions} = useTransactions();
 
-  function circularProgressData(transact) {
-    const data = [];
-
-    for (let trans in transact) {
-      console.log('trans', transact[trans]);
-
-      transact[trans].map(function (currEle) {
-        data.push({
-          name: trans,
-          amount: currEle.amount,
-          description: currEle.description,
-          color: currEle.type === 'income' ? 'green' : 'darkred',
-        });
-      });
-    }
-    return data;
-  }
-
-  const circularData = circularProgressData(transactions);
-
-  console.log('circular data', circularData);
   const incomeData = getTransactionDataByType(transactions, 'income');
   const expenseData = getTransactionDataByType(transactions, 'expense');
+  const circularData = formatCircularPiechartData(transactions);
 
   return (
     <ScrollView style={styles.container}>
@@ -90,15 +73,14 @@ function ReportScreen({handleNavigateBack}) {
       </View>
 
       <View style={styles.graphContainer}>
-        {Object.entries(expenseData).length > 0 ||
-          (Object.entries(incomeData).length > 0 && (
-            <>
-              <View style={styles.textContainer}>
-                <Text style={styles.text}>Report income and expense</Text>
-              </View>
-              <CircularProgress transactions={circularData} />
-            </>
-          ))}
+        {circularData.length > 0 && (
+          <>
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>Report income and expense</Text>
+            </View>
+            <CircularProgress transactions={circularData} />
+          </>
+        )}
       </View>
     </ScrollView>
   );

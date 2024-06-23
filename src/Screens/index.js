@@ -8,6 +8,7 @@ import IncomeFormScreen from './FormScreens/IncomeFormScreen';
 import ExpenseFormScreen from './FormScreens/ExpenseFormScreen';
 import SettingsScreen from './SettingsScreen';
 import ReportScreen from './ReportScreen';
+import UpdateUserScreen from './UpdateUserScreen';
 
 export {
   HomeScreen,
@@ -20,4 +21,5 @@ export {
   ExpenseFormScreen,
   SettingsScreen,
   ReportScreen,
+  UpdateUserScreen,
 };

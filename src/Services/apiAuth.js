@@ -47,3 +47,30 @@ export async function getCurrentUser() {
 
   return data?.user;
 }
+
+export async function updateUser({email, password}) {
+  const {data, error} = await supabase.auth.updateUser({
+    email: email,
+    password: password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  console.log('update user supabse', data);
+
+  return data;
+}
+
+export async function clearAllTransaction(userId) {
+  console.log('user id', userId);
+  const {data, error} = await supabase
+    .from('data')
+    .delete()
+    .eq('UserUID', userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

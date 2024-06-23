@@ -2,22 +2,23 @@ import React from 'react';
 
 import {LoginScreen} from '../../Screens';
 
-
-
-
-export default function LoginContainer({navigation}) {
-
-  const handleNavigateBack = () => {
+function LoginContainer({navigation}) {
+  function handleNavigateBack() {
     navigation.goBack();
-  };
-  const handleNavigatetoRegister = () => {
+  }
+  function handleNavigatetoRegister() {
     navigation.navigate('Register');
-  };
+  }
+  function hanldeNavigatetoForgotpassword() {
+    navigation.navigate('Forgot password');
+  }
   return (
     <LoginScreen
       handleNavigateBack={handleNavigateBack}
       handleNavigatetoRegister={handleNavigatetoRegister}
+      hanldeNavigatetoForgotpassword={hanldeNavigatetoForgotpassword}
       navigation={navigation}
     />
   );
 }
+export default LoginContainer;

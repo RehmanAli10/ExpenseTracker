@@ -11,6 +11,7 @@ import {
   CalendarContainer,
   SettingsContainer,
   ReportsContainer,
+  UpdateUserContainer,
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
@@ -38,6 +39,11 @@ function Navigation() {
         name="Login"
         component={LoginContainer}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Update User"
+        component={UpdateUserContainer}
+        options={{headerShown: true}}
       />
       <Stack.Screen
         name="Home"

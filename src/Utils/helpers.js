@@ -59,3 +59,26 @@ export function getTransactionDataByType(transactions, type) {
 
   return data;
 }
+
+export function formatCircularPiechartData(transact) {
+  const data = [];
+
+  for (let trans in transact) {
+    transact[trans].map(function (currEle) {
+      data.push({
+        name: trans,
+        amount: currEle.amount,
+        description: currEle.description,
+        color:
+          currEle.type === 'income'
+            ? '#32CD32'
+            : currEle.type === 'expense'
+            ? '#FF6347'
+            : '#000000',
+        legendFontColor: currEle.type === 'income' ? '#32CD32' : '#FF6347',
+        legendFontSize: 15,
+      });
+    });
+  }
+  return data;
+}

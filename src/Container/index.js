@@ -7,6 +7,7 @@ import RegisterContainer from './WelcomeAndLoginContainer/RegisterContainer';
 import CalendarContainer from './CalendarContainer';
 import SettingsContainer from './SettingsContainer';
 import ReportsContainer from './ReportsContainer';
+import UpdateUserContainer from './UpdateUserContainer/UpdateUser';
 
 export {
   HomeContainer,
@@ -18,4 +19,5 @@ export {
   CalendarContainer,
   SettingsContainer,
   ReportsContainer,
+  UpdateUserContainer,
 };
