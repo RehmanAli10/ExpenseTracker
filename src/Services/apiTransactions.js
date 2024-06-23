@@ -39,3 +39,15 @@ export async function deleteTransaction(id) {
     throw new Error('Error deleting transaction');
   }
 }
+
+export async function updateCurrency({currency, id}) {
+  const {data, error} = await supabase
+    .from('data')
+    .update({currency: currency})
+    .eq('UserUID', id)
+    .select();
+
+  if (error) {
+    throw new Error(err);
+  }
+}
