@@ -1,8 +1,11 @@
 import React from 'react';
 import SettingsScreen from '../Screens/SettingsScreen';
 
+function SettingsContainer({navigation}) {
+  function handleNavigateBack() {
+    navigation.goBack();
+  }
 
-function SettingsContainer() {
   const currencyDropdownData = [
     {label: 'Item 1', value: '1'},
     {label: 'Item 2', value: '2'},
@@ -13,7 +16,12 @@ function SettingsContainer() {
     {label: 'Item 7', value: '7'},
     {label: 'Item 8', value: '8'},
   ];
-  return <SettingsScreen currencyDropdownData={currencyDropdownData}/>;
+  return (
+    <SettingsScreen
+      currencyDropdownData={currencyDropdownData}
+      handleNavigateBack={handleNavigateBack}
+    />
+  );
 }
 
 export default SettingsContainer;
