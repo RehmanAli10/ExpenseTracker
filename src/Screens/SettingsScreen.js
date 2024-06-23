@@ -1,65 +1,3 @@
-// import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-// import React from 'react';
-// import DropdownComponent from '../Components/DropdownComponent';
-// import {clearAllTransaction} from '../Services/apiAuth';
-// import {useUser} from '../Authentication/useUser';
-// import HeaderComponent from '../Components/HeaderComponent';
-// import {BackIcon} from '../Assets/Icons';
-// import ForwardIcon from '../Assets/Icons/ForwardIcon';
-
-// const SettingsScreen = ({currencyDropdownData, handleNavigateBack}) => {
-//   const {user} = useUser();
-
-//   async function handleClearallTransactions() {
-//     clearAllTransaction(user.id);
-//   }
-
-//   return (
-//     <View style={styles.container}>
-//       <HeaderComponent
-//         newIcon={
-//           <TouchableOpacity onPress={handleNavigateBack}>
-//             <BackIcon color={'white'} height={'8%'} width={'8%'} />
-//           </TouchableOpacity>
-//         }
-//         headingText={'Settings'}
-//       />
-
-//       <TouchableOpacity
-//         style={styles.clearAllContainer}
-//         onPress={handleClearallTransactions}>
-//         <Text style={styles.text}>Clear all transactions</Text>
-//         <ForwardIcon height={25} width={25} color={'black'} />
-//       </TouchableOpacity>
-
-//       <DropdownComponent placeholder="Currency" data={currencyDropdownData} />
-//       <DropdownComponent
-//         placeholder="Date and Time Format"
-//         data={currencyDropdownData}
-//       />
-//     </View>
-//   );
-// };
-// export default SettingsScreen;
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   clearAllContainer: {
-//     borderWidth: 2,
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     flexDirection: 'row',
-//     padding: '3%',
-//     marginTop: '3%',
-//     borderRadius: 10,
-//     marginBottom: '3%',
-//   },
-//   text: {
-//     fontSize: 16,
-//   },
-// });
-
 import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import React from 'react';
 import DropdownComponent from '../Components/DropdownComponent';
@@ -95,10 +33,6 @@ const SettingsScreen = ({currencyDropdownData, handleNavigateBack}) => {
       </TouchableOpacity>
 
       <DropdownComponent placeholder="Currency" data={currencyDropdownData} />
-      <DropdownComponent
-        placeholder="Date and Time Format"
-        data={currencyDropdownData}
-      />
     </View>
   );
 };
