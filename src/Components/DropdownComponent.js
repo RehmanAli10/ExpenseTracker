@@ -1,14 +1,27 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {updateCurrency} from '../Services/apiTransactions';
+import {useUser} from '../Authentication/useUser';
 
 const DropdownComponent = ({placeholder, data}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+
+  const {user} = useUser();
+
+  useEffect(
+    function () {
+      if (value) {
+        updateCurrency({currency: value, id: user?.id});
+      }
+    },
+    [value],
+  );
 
   const dropdownWidth = wp('90%');
 
@@ -23,6 +36,7 @@ const DropdownComponent = ({placeholder, data}) => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
+        itemTextStyle={styles.itemTextStyle}
         data={data}
         search
         labelField="label"
@@ -46,6 +60,7 @@ export default DropdownComponent;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: wp('5%'),
+    marginBottom: hp('2%'),
   },
   dropdown: {
     height: hp('6%'),
@@ -58,9 +73,14 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: wp('4%'),
+    color: 'black',
   },
   inputSearchStyle: {
     height: hp('5%'),
     fontSize: wp('4%'),
+    color: 'black',
+  },
+  itemTextStyle: {
+    color: 'black',
   },
 });
