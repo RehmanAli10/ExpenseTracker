@@ -9,7 +9,7 @@ import {updateCurrency} from '../Services/apiTransactions';
 import {useUser} from '../Authentication/useUser';
 
 const DropdownComponent = ({placeholder, data}) => {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(data[1].label);
   const [isFocus, setIsFocus] = useState(false);
 
   const {user} = useUser();
