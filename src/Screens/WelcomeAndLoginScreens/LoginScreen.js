@@ -40,8 +40,6 @@ export default function LoginScreen({
     );
   }
 
-  function handleGoogleLogin() {}
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.backIconView}>
@@ -83,25 +81,10 @@ export default function LoginScreen({
 
       <View style={styles.iconContainer}>
         <View style={styles.innerIconContainer}>
-          <TouchableOpacity onPress={handleGoogleLogin}>
+          <TouchableOpacity>
             <GoogleIcon height={hp('4%')} width={wp('10')} />
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View
-        style={
-          (styles.registerButtonView,
-          [
-            {marginTop: hp('5%')},
-            {justifyContent: 'center', alignItems: 'center'},
-          ])
-        }>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={hanldeNavigatetoForgotpassword}>
-          <Text style={styles.registerButtonText}>Forgot password?</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.registerButtonView}>

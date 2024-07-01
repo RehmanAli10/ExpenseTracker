@@ -27,13 +27,27 @@ export async function signinUser({email, password}) {
   return data;
 }
 
-export async function signOut() {
+export async function signOut(userId) {
   try {
+    await clearUserIdFromSettings(userId);
+
     const {error} = await supabase.auth.signOut();
     if (error) throw new Error(error.message);
   } catch (error) {
     console.error('Error signing out:', error);
   }
+}
+
+export async function clearUserIdFromSettings(userId) {
+  const {data, error} = await supabase
+    .from('settings')
+    .update({userId: null})
+    .eq('userId', userId); // Update only where userId matches
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
 }
 
 export async function getCurrentUser() {
@@ -58,19 +72,5 @@ export async function updateUser({email, password}) {
     throw new Error(error.message);
   }
 
-  console.log('update user supabse', data);
-
   return data;
-}
-
-export async function clearAllTransaction(userId) {
-  console.log('user id', userId);
-  const {data, error} = await supabase
-    .from('data')
-    .delete()
-    .eq('UserUID', userId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
 }

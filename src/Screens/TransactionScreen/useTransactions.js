@@ -2,6 +2,7 @@ import {useQuery} from '@tanstack/react-query';
 import {getTransactions} from '../../Services/apiTransactions';
 import {groupTransactionsByMonthYear} from '../../Utils/helpers';
 import {useUser} from '../../Authentication/useUser';
+import {useUpdatecurrency} from '../useUpdatecurrency';
 
 export function useTransactions() {
   const {user} = useUser();
@@ -12,7 +13,7 @@ export function useTransactions() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['transactions'],
+    queryKey: ['transactions', 'currency'],
     queryFn: getTransactions,
   });
 
@@ -20,13 +21,17 @@ export function useTransactions() {
     trans => trans.UserUID === user.id,
   );
 
-  let totalIncome = userSignedInTransactions
-    ?.filter(currElem => currElem.type === 'income')
-    .reduce((acc, currElem) => acc + currElem.amount, 0);
+  let currency = userSignedInTransactions?.[0]?.currency;
 
-  let totalExpense = userSignedInTransactions
-    ?.filter(currElem => currElem.type === 'expense')
-    .reduce((acc, currElem) => acc + currElem.amount, 0);
+  let totalIncome =
+    userSignedInTransactions
+      ?.filter(currElem => currElem.type === 'income')
+      .reduce((acc, currElem) => acc + currElem.amount, 0) || 0;
+
+  let totalExpense =
+    userSignedInTransactions
+      ?.filter(currElem => currElem.type === 'expense')
+      .reduce((acc, currElem) => acc + currElem.amount, 0) || 0;
 
   let totalBalance = totalIncome - totalExpense;
 
@@ -43,5 +48,6 @@ export function useTransactions() {
     totalExpense,
     totalBalance,
     refetch,
+    currency,
   };
 }

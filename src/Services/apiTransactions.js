@@ -40,6 +40,17 @@ export async function deleteTransaction(id) {
   }
 }
 
+export async function clearAllTransaction(userId) {
+  const {data, error} = await supabase
+    .from('data')
+    .delete()
+    .eq('UserUID', userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function updateCurrency({currency, id}) {
   const {data, error} = await supabase
     .from('data')
@@ -50,4 +61,6 @@ export async function updateCurrency({currency, id}) {
   if (error) {
     throw new Error(err);
   }
+
+  return data;
 }

@@ -14,7 +14,7 @@ export function useAddIncome() {
       toast.show('Added income successfully', {
         type: 'success',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       });
 
       queryClient.invalidateQueries({
@@ -26,7 +26,7 @@ export function useAddIncome() {
       toast.show(err.message, {
         type: 'danger',
         placement: 'top',
-        duration: 2000,
+        duration: 1000,
       });
     },
   });

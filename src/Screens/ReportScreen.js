@@ -16,9 +16,14 @@ import {
   getTransactionDataByType,
   formatCircularPiechartData,
 } from '../Utils/helpers';
+import {useSettings} from './useSettings';
 
 function ReportScreen({handleNavigateBack}) {
   const {transactions} = useTransactions();
+
+  const {settings} = useSettings();
+
+  console.log('Report screen', settings);
 
   const incomeData = getTransactionDataByType(transactions, 'income');
   const expenseData = getTransactionDataByType(transactions, 'expense');
@@ -52,6 +57,7 @@ function ReportScreen({handleNavigateBack}) {
               transactions={incomeData}
               color={'green'}
               rgba="0, 200, 0"
+              currency={settings?.[0]?.settingCurrency}
             />
           </>
         )}
@@ -67,6 +73,7 @@ function ReportScreen({handleNavigateBack}) {
               transactions={expenseData}
               color={'darkred'}
               rgba="200, 0, 0"
+              currency={settings?.[0]?.settingCurrency}
             />
           </>
         )}
