@@ -5,15 +5,15 @@ function SettingsContainer({navigation}) {
   function handleNavigateBack() {
     navigation.goBack();
   }
-  const currencyDropdownData = [
-    {label: 'RUP', value: 'Rs'},
-    {label: 'USD', value: '$'},
-    {label: 'EUR', value: '€'},
-  ];
+
+  function handleNavigateUpdateuserScreen() {
+    navigation.navigate('Update User');
+  }
+
   return (
     <SettingsScreen
-      currencyDropdownData={currencyDropdownData}
       handleNavigateBack={handleNavigateBack}
+      handleNavigateUpdateuserScreen={handleNavigateUpdateuserScreen}
     />
   );
 }

@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import React from 'react';
+import {View, Dimensions, ScrollView} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 
-function Charts({transactions, color, rgba}) {
+function Charts({transactions, color, rgba, currency}) {
   const labels = Object.keys(transactions);
+
+  console.log('currency', currency);
+
   const dataPoints = Object.values(transactions);
 
   const data = {
@@ -50,7 +53,7 @@ function Charts({transactions, color, rgba}) {
           data={data}
           width={dynamicWidth}
           height={300}
-          yAxisLabel="$"
+          yAxisLabel={currency}
           chartConfig={chartConfig}
           verticalLabelRotation={0}
         />
@@ -58,7 +61,5 @@ function Charts({transactions, color, rgba}) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default Charts;

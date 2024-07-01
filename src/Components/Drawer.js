@@ -17,6 +17,7 @@ import {
   LogoutIcon,
   SettingsIcon,
 } from '../Assets/Icons';
+import {useUser} from '../Authentication/useUser';
 function Drawer({
   isOpen,
   onClose,
@@ -27,6 +28,7 @@ function Drawer({
   logOut,
   isPending,
 }) {
+  const {user} = useUser();
   return (
     <Modal
       animationIn="slideInLeft"
@@ -103,7 +105,7 @@ function Drawer({
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity onPress={logOut}>
+              <TouchableOpacity onPress={() => logOut(user?.id)}>
                 <View style={styles.drawerContent}>
                   <LogoutIcon
                     height={hp('3%')}

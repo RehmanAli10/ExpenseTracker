@@ -8,6 +8,7 @@ import {formatFormDate} from '../Utils/helpers';
 import PopUp from './PopUp';
 import AlertModal from './AlertModal';
 import ForwardIcon from '../Assets/Icons/ForwardIcon';
+import {useSettings} from '../Screens/useSettings';
 
 function Transaction({
   id,
@@ -25,6 +26,8 @@ function Transaction({
   setDeleteModalVisible,
   selectedTransaction,
 }) {
+  const {settings} = useSettings();
+
   let date = formatFormDate(time).slice(8, 10);
 
   const truncateDescription = (desc, maxLength) => {
@@ -71,7 +74,7 @@ function Transaction({
               style={
                 type === 'income' ? styles.incomeAmount : styles.expenseAmount
               }>
-              {amount}
+              {settings?.[0]?.settingCurrency} {amount} {/* Added space here */}
             </Text>
             <TouchableOpacity onPress={() => handleModal(description, id)}>
               <Text

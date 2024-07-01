@@ -43,7 +43,7 @@ function Navigation() {
       <Stack.Screen
         name="Update User"
         component={UpdateUserContainer}
-        options={{headerShown: true}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Home"

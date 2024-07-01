@@ -1,17 +1,48 @@
-import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
-import React from 'react';
-import DropdownComponent from '../Components/DropdownComponent';
-import {clearAllTransaction} from '../Services/apiAuth';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useUser} from '../Authentication/useUser';
 import HeaderComponent from '../Components/HeaderComponent';
-import {BackIcon} from '../Assets/Icons';
+import BackIcon from '../Assets/Icons/BackIcon';
 import ForwardIcon from '../Assets/Icons/ForwardIcon';
+import {useClearallTransactions} from './useClearallTransactions';
+import {Dropdown} from 'react-native-element-dropdown';
+import {useSettings} from './useSettings';
+import {useSettingsUpdate} from './useSettingsUpdate';
 
-const SettingsScreen = ({currencyDropdownData, handleNavigateBack}) => {
+function SettingsScreen({handleNavigateBack, handleNavigateUpdateuserScreen}) {
   const {user} = useUser();
 
-  async function handleClearAllTransactions() {
-    clearAllTransaction(user.id);
+  const {settings, isLoading} = useSettings();
+
+  const {clearAllTransaction} = useClearallTransactions();
+
+  const [selectedCurrency, setSelectedCurrency] = useState('$');
+
+  const {isUpdating, updateSettings} = useSettingsUpdate();
+
+  useEffect(
+    function () {
+      if (settings && settings.length > 0) {
+        setSelectedCurrency(settings[0].settingCurrency || '$');
+      }
+    },
+    [settings],
+  );
+
+  function handleClearAllTransactions() {
+    clearAllTransaction(user?.id);
+  }
+
+  function handleProfile() {
+    handleNavigateUpdateuserScreen();
+  }
+
+  function handleCurrencyChange(curr) {
+    if (user && user?.id) {
+      updateSettings({curr, userId: user?.id});
+    } else {
+      console.error('User Id is undefined');
+    }
   }
 
   return (
@@ -32,10 +63,32 @@ const SettingsScreen = ({currencyDropdownData, handleNavigateBack}) => {
         <ForwardIcon height={25} width={25} color="black" />
       </TouchableOpacity>
 
-      <DropdownComponent placeholder="Currency" data={currencyDropdownData} />
+      <TouchableOpacity
+        style={styles.clearAllContainer}
+        onPress={handleProfile}>
+        <Text style={styles.text}>Profile</Text>
+        <ForwardIcon height={25} width={25} color="black" />
+      </TouchableOpacity>
+
+      <View style={styles.dropdownContainer}>
+        <Text style={styles.dropdownLabel}>Select Currency</Text>
+        <Dropdown
+          style={styles.dropdown}
+          data={[
+            {label: 'Dollar ($)', value: '$'},
+            {label: 'Rupee (Rs)', value: 'Rs'},
+            {label: 'Euro (€)', value: '€'},
+          ]}
+          labelField="label"
+          valueField="value"
+          placeholder="Select a currency"
+          value={isLoading ? 'Loading' : selectedCurrency}
+          onChange={item => handleCurrencyChange(item.value)}
+        />
+      </View>
     </View>
   );
-};
+}
 
 export default SettingsScreen;
 
@@ -67,5 +120,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: '#333',
+  },
+  dropdownContainer: {
+    marginVertical: 20,
+    paddingHorizontal: 16,
+  },
+  dropdownLabel: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 8,
   },
 });

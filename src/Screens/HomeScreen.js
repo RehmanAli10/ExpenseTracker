@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 
@@ -18,6 +18,8 @@ import {
 import HeaderComponent from '../Components/HeaderComponent';
 import Drawer from '../Components/Drawer';
 import CustomSpinner from '../Components/CustomSpinner';
+import {useUpdateSettingsUserid} from './useUpdatesettingsUserid';
+import {useUser} from '../Authentication/useUser';
 
 function HomeScreen({
   handleNavigate,
@@ -32,6 +34,17 @@ function HomeScreen({
   logOut,
   isPending,
 }) {
+  const {user} = useUser();
+
+  const {updateSettingsUserid} = useUpdateSettingsUserid();
+
+  useEffect(
+    function () {
+      updateSettingsUserid(user?.id);
+    },
+    [user?.id],
+  );
+
   if (isPending)
     return (
       <View style={styles.container}>

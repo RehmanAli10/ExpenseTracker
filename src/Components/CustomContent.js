@@ -3,50 +3,56 @@ import {View, Text, StyleSheet} from 'react-native';
 
 import CustomSpinner from './CustomSpinner';
 import {useTransactions} from '../Screens/TransactionScreen/useTransactions';
+import {useSettings} from '../Screens/useSettings';
 
 function CustomContent() {
   const {isLoading, totalIncome, totalExpense, totalBalance} =
     useTransactions();
 
+  const {settings} = useSettings();
+
   return (
     <View style={styles.contentContainer}>
       <View>
         <Text style={styles.incomeText}>Income</Text>
-
         {isLoading ? (
-          <CustomSpinner size={'small'} color={'#0000ff'} />
+          <CustomSpinner size="small" color="#0000ff" />
         ) : (
-          <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
+          <Text style={styles.incomeContent}>
+            {totalIncome.toFixed(2)} {settings?.[0]?.settingCurrency}
+          </Text>
         )}
       </View>
       <View>
         <Text style={styles.expenseText}>Expense</Text>
-
         {isLoading ? (
-          <CustomSpinner size={'small'} color={'#0000ff'} />
+          <CustomSpinner size="small" color="#0000ff" />
         ) : (
-          <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
+          <Text style={styles.expenseContent}>
+            {totalExpense.toFixed(2)} {settings?.[0]?.settingCurrency}
+          </Text>
         )}
       </View>
       <View>
         <Text style={styles.balanceText}>Balance</Text>
-        {/* calculated balance on the top of the screen and shown on the balance content */}
         {isLoading ? (
-          <CustomSpinner size={'small'} color={'#0000ff'} />
+          <CustomSpinner size="small" color="#0000ff" />
         ) : (
-          <Text style={styles.balanceContent}>{totalBalance} Rs</Text>
+          <Text style={styles.balanceContent}>
+            {totalBalance.toFixed(2)} {settings?.[0]?.settingCurrency}
+          </Text>
         )}
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 25,
     width: '90%',
     backgroundColor: '#ACA9BB',
     flexDirection: 'row',
-    // justifyContent: 'center',
     justifyContent: 'space-evenly',
     borderRadius: 30,
   },
@@ -76,6 +82,9 @@ const styles = StyleSheet.create({
   balanceText: {
     fontWeight: 'bold',
     color: 'black',
+  },
+  text: {
+    color: 'blue',
   },
 });
 

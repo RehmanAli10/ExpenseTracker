@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, FlatList, Text} from 'react-native';
+import {StyleSheet, View, FlatList, Text, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {useTransactions} from './TransactionScreen/useTransactions';
 import {useDeleteTransaction} from './FormScreens/useDeleteTransaction';
 import Transaction from '../Components/Transaction';
-import {useNavigation} from '@react-navigation/native';
+import HeaderComponent from '../Components/HeaderComponent';
+import {BackIcon} from '../Assets/Icons';
 
-function CalendarScreen() {
-  const navigation = useNavigation();
-
+function CalendarScreen({navigation, handleNavigateBack}) {
   const [selected, setSelected] = useState(new Date());
   const [modalVisible, setModalVisible] = useState(false);
   const [detailDescription, setDetailDescription] = useState('');
@@ -116,6 +115,14 @@ function CalendarScreen() {
 
   return (
     <View>
+      <HeaderComponent
+        newIcon={
+          <TouchableOpacity onPress={handleNavigateBack}>
+            <BackIcon />
+          </TouchableOpacity>
+        }
+        headingText={'Calendar'}
+      />
       <Calendar
         onDayPress={handleDayPress}
         markedDates={markedDates}

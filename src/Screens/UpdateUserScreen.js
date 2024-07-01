@@ -5,17 +5,22 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useUpdateUser} from '../Container/UpdateUserContainer/useUpdateUser';
 import CustomSpinner from '../Components/CustomSpinner';
-import {allUsers} from '../Services/apiAuth';
 
-function UpdateUserScreen() {
-  const [email, setEmail] = useState('');
+import {useUser} from '../Authentication/useUser';
+import HeaderComponent from '../Components/HeaderComponent';
+import {BackIcon} from '../Assets/Icons';
+
+function UpdateUserScreen({handleNavigateBack}) {
+  const {user} = useUser();
+
+  const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
 
   const {updateUser, isPending} = useUpdateUser();
@@ -28,25 +33,36 @@ function UpdateUserScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.usernameInputText}>Email</Text>
-        <TextInput
-          style={styles.input}
-          value={email}
-          placeholder="Enter a Email"
-          placeholderTextColor="gray"
-          onChangeText={text => setEmail(text)}
-        />
+      <HeaderComponent
+        newIcon={
+          <TouchableOpacity onPress={handleNavigateBack}>
+            <BackIcon />
+          </TouchableOpacity>
+        }
+        headingText={'Profile'}
+      />
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.usernameInputText}>Email</Text>
+          <TextInput
+            style={[styles.input, {backgroundColor: 'lightgrey'}]}
+            value={email}
+            placeholder="Enter a Email"
+            placeholderTextColor="gray"
+            onChangeText={text => setEmail(text)}
+            editable={false}
+          />
 
-        <Text style={styles.passwordInputText}>Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Password"
-          placeholderTextColor="gray"
-          secureTextEntry
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
+          <Text style={styles.passwordInputText}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Password"
+            placeholderTextColor="gray"
+            secureTextEntry
+            value={password}
+            onChangeText={text => setPassword(text)}
+          />
+        </View>
       </View>
 
       <View style={styles.buttonView}>
@@ -70,8 +86,7 @@ function UpdateUserScreen() {
 export default UpdateUserScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  formContainer: {
     paddingHorizontal: wp('5%'),
     backgroundColor: 'white',
   },
