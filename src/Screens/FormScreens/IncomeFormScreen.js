@@ -132,7 +132,6 @@ function IncomeFormScreen() {
               value={String(inputValueEvent)}
               keyboardType="phone-pad"
               style={[styles.amountBox, {borderColor: 'green'}]}
-              // detecting the changed state
               onChangeText={text => setInputValueEvent(text)}
             />
           </View>
@@ -141,17 +140,15 @@ function IncomeFormScreen() {
         <View style={styles.buttonView}>
           {index ? (
             <TouchableOpacity
-              style={[styles.buttonAdd, {backgroundColor: 'green'}]}
+              style={[styles.buttonAdd, {backgroundColor: '#28a745'}]}
               activeOpacity={0.8}
-              // setting the data in an empty array state
               onPress={handleEdit}>
               <Text style={styles.buttonText}>Edit</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              style={[styles.buttonAdd, {backgroundColor: 'green'}]}
+              style={[styles.buttonAdd, {backgroundColor: '#28a745'}]}
               activeOpacity={0.8}
-              // setting the data in an empty array state
               onPress={handleAddIncome}>
               <Text style={styles.buttonText}>Add Income</Text>
             </TouchableOpacity>
@@ -166,73 +163,109 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     paddingBottom: hp('2%'),
+    backgroundColor: '#f0f4f7',
   },
   container: {
     flex: 1,
-    backgroundColor: 'lightgrey',
-  },
-  notification: {
-    flex: 2,
-    position: 'absolute',
-    backgroundColor: 'Yellow',
+    backgroundColor: '#f0f4f7',
   },
   infoView: {
     alignItems: 'center',
+    marginTop: hp('5%'),
   },
   descriptionBox: {
-    width: wp('95%'),
-    marginTop: hp('5%'),
+    width: wp('90%'),
+    marginBottom: hp('2%'),
     paddingVertical: hp('2%'),
-    paddingHorizontal: wp('5%'),
-    backgroundColor: 'white',
+    paddingHorizontal: wp('4%'),
+    backgroundColor: '#ffffff',
     borderRadius: wp('4%'),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   dateTimeBox: {
-    width: wp('95%'),
-    marginTop: hp('5%'),
+    width: wp('90%'),
+    marginBottom: hp('2%'),
     paddingVertical: hp('2%'),
-    paddingHorizontal: wp('5%'),
-    backgroundColor: 'white',
+    paddingHorizontal: wp('4%'),
+    backgroundColor: '#ffffff',
     borderRadius: wp('4%'),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   incomeBox: {
-    width: wp('95%'),
-    marginTop: hp('5%'),
+    width: wp('90%'),
+    marginBottom: hp('2%'),
     paddingVertical: hp('2%'),
-    paddingHorizontal: wp('5%'),
-    backgroundColor: 'white',
+    paddingHorizontal: wp('4%'),
+    backgroundColor: '#ffffff',
     borderRadius: wp('4%'),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   amountHeading: {
-    color: 'black',
+    color: '#333',
     fontWeight: 'bold',
+    marginBottom: hp('1%'),
   },
   amountBox: {
     borderBottomWidth: 1,
-    color: 'black',
+    borderBottomColor: '#ddd',
+    color: '#333',
+    paddingVertical: hp('0.5%'),
   },
   amountBoxTwo: {
     borderBottomWidth: 1,
-    color: 'black',
+    borderBottomColor: '#ddd',
+    color: '#333',
+    paddingVertical: hp('0.5%'),
   },
   buttonAdd: {
-    width: wp('89%'),
+    width: wp('85%'),
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: wp('5%'),
     paddingVertical: hp('2%'),
-    marginTop: hp('5%'),
+    marginTop: hp('2%'),
+    borderColor: 'transparent',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonView: {
-    paddingVertical: hp('2%'),
     alignItems: 'center',
-    paddingHorizontal: wp('5%'),
+    marginTop: hp('5%'),
   },
   buttonText: {
     color: 'white',
+    fontWeight: 'bold',
+    fontSize: hp('2.2%'),
   },
   dateTimeStyle: {
-    color: 'black',
+    color: '#333',
   },
 });
 

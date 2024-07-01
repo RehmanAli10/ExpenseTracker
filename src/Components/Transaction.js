@@ -74,7 +74,7 @@ function Transaction({
               style={
                 type === 'income' ? styles.incomeAmount : styles.expenseAmount
               }>
-              {settings?.[0]?.settingCurrency} {amount} {/* Added space here */}
+              {settings?.[0]?.settingCurrency} {amount}
             </Text>
             <TouchableOpacity onPress={() => handleModal(description, id)}>
               <Text
@@ -110,44 +110,61 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#ffff',
-    marginBottom: '3%',
-    height: hp('10%'),
-    width: wp('100%'),
+    backgroundColor: '#FFFFFF',
+    marginBottom: hp('2%'),
+    padding: hp('2%'),
+    borderRadius: wp('2%'),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   dateDescriptionContainer: {
     flexDirection: 'row',
-    gap: 20,
-    marginLeft: '2%',
+    gap: wp('5%'),
+    alignItems: 'center',
   },
   incomeDescription: {
     color: 'green',
+    fontWeight: 'bold',
+    fontSize: wp('4%'),
   },
   incomeAmount: {
     color: 'green',
+    fontWeight: 'bold',
+    fontSize: wp('4.5%'),
   },
   expenseDescription: {
     color: 'darkred',
+    fontWeight: 'bold',
+    fontSize: wp('4%'),
   },
   expenseAmount: {
     color: 'darkred',
+    fontWeight: 'bold',
+    fontSize: wp('4.5%'),
   },
   date: {
     backgroundColor: 'black',
-    borderRadius: 20,
+    borderRadius: wp('10%'),
     height: hp('5%'),
     width: wp('10%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   dateText: {
-    color: '#ffff',
+    color: '#FFFFFF',
+    fontSize: wp('4.5%'),
+    fontWeight: 'bold',
   },
   editDeleteView: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 30,
     flexDirection: 'row',
-    gap: 10,
+    gap: wp('2%'),
   },
 });

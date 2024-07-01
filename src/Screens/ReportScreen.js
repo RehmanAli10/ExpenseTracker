@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   View,
   Text,
@@ -5,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React from 'react';
 import HeaderComponent from '../Components/HeaderComponent';
 import {BackIcon} from '../Assets/Icons';
 
@@ -20,76 +20,65 @@ import {useSettings} from './useSettings';
 
 function ReportScreen({handleNavigateBack}) {
   const {transactions} = useTransactions();
-
   const {settings} = useSettings();
-
-  console.log('Report screen', settings);
 
   const incomeData = getTransactionDataByType(transactions, 'income');
   const expenseData = getTransactionDataByType(transactions, 'expense');
   const circularData = formatCircularPiechartData(transactions);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <HeaderComponent
         newIcon={
           <TouchableOpacity onPress={handleNavigateBack}>
-            <BackIcon color={'white'} height={'8%'} width={'8%'} />
+            <BackIcon color={'white'} height={24} width={24} />
           </TouchableOpacity>
         }
         headingText={'Reports'}
       />
 
-      {Object.entries(incomeData).length === 0 &&
-        Object.entries(expenseData).length === 0 && (
-          <View style={styles.messageContainer}>
-            <Text style={styles.messageText}>Kindly, Add Transactions 😊</Text>
-          </View>
-        )}
-
-      <View style={styles.graphContainer}>
-        {Object.entries(incomeData).length > 0 && (
-          <>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>Reports by income</Text>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        {Object.entries(incomeData).length === 0 &&
+          Object.entries(expenseData).length === 0 && (
+            <View style={styles.messageContainer}>
+              <Text style={styles.messageText}>
+                No transactions recorded yet.
+              </Text>
             </View>
+          )}
+
+        {Object.entries(incomeData).length > 0 && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Income Reports</Text>
             <Charts
               transactions={incomeData}
               color={'green'}
               rgba="0, 200, 0"
               currency={settings?.[0]?.settingCurrency}
             />
-          </>
+          </View>
         )}
-      </View>
 
-      <View style={styles.graphContainer}>
         {Object.entries(expenseData).length > 0 && (
-          <>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>Reports by expense</Text>
-            </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Expense Reports</Text>
             <Charts
               transactions={expenseData}
               color={'darkred'}
               rgba="200, 0, 0"
               currency={settings?.[0]?.settingCurrency}
             />
-          </>
+          </View>
         )}
-      </View>
 
-      <View style={styles.graphContainer}>
         {circularData.length > 0 && (
-          <>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>Report income and expense</Text>
-            </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Income and Expense Overview</Text>
             <CircularProgress transactions={circularData} />
-          </>
+          </View>
         )}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -98,28 +87,30 @@ export default ReportScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
   },
-  textContainer: {
-    marginBottom: 10,
-    marginLeft: 10,
-  },
-  text: {
-    color: 'black',
-    fontSize: 18,
-    fontWeight: 'bold',
+  contentContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 24,
   },
   messageContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 100,
   },
   messageText: {
-    color: 'black',
     fontSize: 18,
+    color: 'black',
   },
-  graphContainer: {
-    marginTop: 12,
-    marginLeft: 12,
+  sectionContainer: {
+    marginTop: 24,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: 'black',
   },
 });

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -32,85 +32,50 @@ function TransactionScreen({navigation, handleNavigateBack}) {
     useTransactions();
   const {deleteTransaction} = useDeleteTransaction();
 
-  function handleEdit(id) {
-    let newData = Object.values(transactions)
-      .flat(1)
-      .find(currEle => currEle.id === id);
+  const handleEdit = useCallback(
+    id => {
+      const newData = Object.values(transactions)
+        .flat(1)
+        .find(currEle => currEle.id === id);
 
-    let editedData = {
-      id: newData.id,
-      amount: newData.amount,
-      description: newData.description,
-      time: newData.time,
-    };
+      const editedData = {
+        id: newData.id,
+        amount: newData.amount,
+        description: newData.description,
+        time: newData.time,
+      };
 
-    if (newData.type === 'income') {
-      navigation.navigate('IncomeFormScreen', {
-        index: editedData,
-      });
-    } else {
-      navigation.navigate('ExpenseFormScreen', {
-        index: editedData,
-      });
-    }
-  }
+      if (newData.type === 'income') {
+        navigation.navigate('IncomeFormScreen', {index: editedData});
+      } else {
+        navigation.navigate('ExpenseFormScreen', {index: editedData});
+      }
+    },
+    [transactions, navigation],
+  );
 
-  function handleDelete(id) {
-    deleteTransaction(id);
-  }
+  const handleDelete = useCallback(
+    id => {
+      deleteTransaction(id);
+    },
+    [deleteTransaction],
+  );
 
-  function handleModal(desc, id) {
+  const handleModal = useCallback((desc, id) => {
     setSelectedTransaction(id);
     setDetailDescription(desc);
     setModalVisible(true);
-  }
+  }, []);
 
-  function handleFilterChange(newFilter) {
+  const handleFilterChange = useCallback(newFilter => {
     setFilter(newFilter);
-  }
+  }, []);
 
-  function handleSearchQuery(query) {
+  const handleSearchQuery = useCallback(query => {
     setSearchQuery(query);
-  }
+  }, []);
 
-  const renderItem = function ({item}) {
-    const {id, amount, type, description, time} = item;
-
-    return (
-      <Transaction
-        id={id}
-        amount={amount}
-        type={type}
-        description={description}
-        time={time}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleModal={handleModal}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        detailDescription={detailDescription}
-        deleteModalVisible={deleteModalVisible}
-        setDeleteModalVisible={setDeleteModalVisible}
-        selectedTransaction={selectedTransaction}
-      />
-    );
-  };
-
-  const renderGroup = ({item}) => (
-    <View style={styles.groupContainer}>
-      <Text style={styles.monthYear}>{item.monthYear}</Text>
-      <FlatList
-        data={item.data}
-        renderItem={renderItem}
-        keyExtractor={transactions => transactions.id}
-      />
-    </View>
-  );
-
-  if (isLoading)
-    return <ActivityIndicator style={styles.container} size={'large'} />;
-
-  function getFilteredTransactions() {
+  const getFilteredTransactions = useCallback(() => {
     let allTransactions = Object.values(transactions).flat(1);
 
     if (searchQuery) {
@@ -155,19 +120,77 @@ function TransactionScreen({navigation, handleNavigateBack}) {
       default:
         return allTransactions;
     }
-  }
+  }, [transactions, searchQuery, filter]);
 
-  const filteredTransactions = getFilteredTransactions();
-
-  const groupedTransactions =
-    groupTransactionsByMonthYear(filteredTransactions);
-
-  const groupedTransactionsArray = Object.keys(groupedTransactions).map(
-    key => ({
-      monthYear: key,
-      data: groupedTransactions[key],
-    }),
+  const filteredTransactions = useMemo(
+    () => getFilteredTransactions(),
+    [getFilteredTransactions],
   );
+
+  const groupedTransactions = useMemo(
+    () => groupTransactionsByMonthYear(filteredTransactions),
+    [filteredTransactions],
+  );
+
+  const groupedTransactionsArray = useMemo(
+    () =>
+      Object.keys(groupedTransactions).map(key => ({
+        monthYear: key,
+        data: groupedTransactions[key],
+      })),
+    [groupedTransactions],
+  );
+
+  const renderItem = useCallback(
+    ({item}) => {
+      const {id, amount, type, description, time} = item;
+
+      return (
+        <Transaction
+          id={id}
+          amount={amount}
+          type={type}
+          description={description}
+          time={time}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleModal={handleModal}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          detailDescription={detailDescription}
+          deleteModalVisible={deleteModalVisible}
+          setDeleteModalVisible={setDeleteModalVisible}
+          selectedTransaction={selectedTransaction}
+        />
+      );
+    },
+    [
+      handleEdit,
+      handleDelete,
+      handleModal,
+      modalVisible,
+      deleteModalVisible,
+      detailDescription,
+      selectedTransaction,
+    ],
+  );
+
+  const renderGroup = useCallback(
+    ({item}) => (
+      <View style={styles.groupContainer}>
+        <Text style={styles.monthYear}>{item.monthYear}</Text>
+        <FlatList
+          data={item.data}
+          renderItem={renderItem}
+          keyExtractor={transaction => transaction.id}
+        />
+      </View>
+    ),
+    [renderItem],
+  );
+
+  if (isLoading)
+    return <ActivityIndicator style={styles.container} size={'large'} />;
 
   return (
     <View style={styles.container}>
@@ -221,7 +244,7 @@ function TransactionScreen({navigation, handleNavigateBack}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#F0F0F0',
   },
   messageContainer: {
     flex: 1,

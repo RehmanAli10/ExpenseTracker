@@ -18,6 +18,7 @@ import {
   SettingsIcon,
 } from '../Assets/Icons';
 import {useUser} from '../Authentication/useUser';
+
 function Drawer({
   isOpen,
   onClose,
@@ -43,86 +44,78 @@ function Drawer({
           onPress={onClose}
         />
         <View style={styles.drawerContainer}>
-          {/* Drawer content */}
           <View style={styles.headingProfileContainer}>
             <View style={styles.headingView}>
-              <Text style={styles.heading}>Expense </Text>
-              <Text style={styles.headingTwo}>Tracker </Text>
+              <Text style={styles.heading}>Expense</Text>
+              <Text style={styles.headingTwo}>Tracker</Text>
             </View>
-            <View></View>
           </View>
           <View style={styles.line} />
           <View style={styles.drawerContentView}>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  handleNavigateCalendar();
-                  setIsDrawerOpen(false);
-                }}>
-                <View style={styles.drawerContent}>
-                  <CalendarIcon
-                    height={hp('3%')}
-                    width={wp('8%')}
-                    color={'white'}
-                  />
-
-                  <Text style={styles.text}>Calendar</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  handleNavigateHome();
-                  setIsDrawerOpen(false);
-                }}>
-                <View style={styles.drawerContent}>
-                  <HomeIcon
-                    height={hp('3%')}
-                    width={wp('8%')}
-                    color={'white'}
-                  />
-
-                  <Text style={styles.text}>Home</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  handleNavigateSetting();
-                  setIsDrawerOpen(false);
-                }}>
-                <View style={styles.drawerContent}>
-                  <SettingsIcon
-                    height={hp('3%')}
-                    width={wp('8%')}
-                    color={'white'}
-                  />
-
-                  <Text style={styles.text}>Settings</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity onPress={() => logOut(user?.id)}>
-                <View style={styles.drawerContent}>
-                  <LogoutIcon
-                    height={hp('3%')}
-                    width={wp('8%')}
-                    color={'white'}
-                  />
-
-                  <Text style={styles.text}>Log Out</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            <DrawerItem
+              onPress={() => {
+                handleNavigateCalendar();
+                setIsDrawerOpen(false);
+              }}
+              icon={
+                <CalendarIcon
+                  height={hp('3%')}
+                  width={wp('8%')}
+                  color={'white'}
+                />
+              }
+              text="Calendar"
+            />
+            <DrawerItem
+              onPress={() => {
+                handleNavigateHome();
+                setIsDrawerOpen(false);
+              }}
+              icon={
+                <HomeIcon height={hp('3%')} width={wp('8%')} color={'white'} />
+              }
+              text="Home"
+            />
+            <DrawerItem
+              onPress={() => {
+                handleNavigateSetting();
+                setIsDrawerOpen(false);
+              }}
+              icon={
+                <SettingsIcon
+                  height={hp('3%')}
+                  width={wp('8%')}
+                  color={'white'}
+                />
+              }
+              text="Settings"
+            />
+            <DrawerItem
+              onPress={() => logOut(user?.id)}
+              icon={
+                <LogoutIcon
+                  height={hp('3%')}
+                  width={wp('8%')}
+                  color={'white'}
+                />
+              }
+              text="Log Out"
+            />
           </View>
         </View>
       </View>
     </Modal>
   );
 }
+
+const DrawerItem = ({onPress, icon, text}) => (
+  <TouchableOpacity onPress={onPress} style={styles.drawerItemContainer}>
+    <View style={styles.drawerContent}>
+      {icon}
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -139,8 +132,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     width: wp('75%'),
-    backgroundColor: 'black',
+    backgroundColor: '#1c1c1e',
     padding: wp('5%'),
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   headingProfileContainer: {
     marginVertical: hp('1%'),
@@ -149,38 +147,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: hp('2%'),
   },
+  headingView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   heading: {
-    fontSize: wp('5%'),
+    fontSize: wp('6%'),
     color: 'white',
     fontWeight: 'bold',
   },
   headingTwo: {
-    marginVertical: hp('1%'),
-    fontSize: wp('5%'),
-    color: 'lightgrey',
-  },
-  profilePic: {
-    width: wp('12%'),
-    height: wp('12%'),
-    borderRadius: wp('3%'),
+    marginLeft: wp('2%'),
+    fontSize: wp('6%'),
+    color: '#ffa726',
   },
   line: {
-    color: 'white',
     borderBottomColor: 'white',
     borderBottomWidth: 1,
-    marginVertical: hp('1%'),
+    marginVertical: hp('2%'),
   },
   drawerContentView: {
-    marginVertical: hp('3%'),
+    marginTop: hp('3%'),
   },
   drawerContent: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
   },
   text: {
     fontSize: wp('5%'),
-    marginBottom: hp('2%'),
+    marginLeft: wp('3%'),
     color: 'white',
+  },
+  drawerItemContainer: {
+    paddingVertical: hp('2%'),
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
   },
 });
 

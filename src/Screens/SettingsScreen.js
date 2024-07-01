@@ -11,23 +11,16 @@ import {useSettingsUpdate} from './useSettingsUpdate';
 
 function SettingsScreen({handleNavigateBack, handleNavigateUpdateuserScreen}) {
   const {user} = useUser();
-
   const {settings, isLoading} = useSettings();
-
   const {clearAllTransaction} = useClearallTransactions();
-
   const [selectedCurrency, setSelectedCurrency] = useState('$');
-
   const {isUpdating, updateSettings} = useSettingsUpdate();
 
-  useEffect(
-    function () {
-      if (settings && settings.length > 0) {
-        setSelectedCurrency(settings[0].settingCurrency || '$');
-      }
-    },
-    [settings],
-  );
+  useEffect(() => {
+    if (settings && settings.length > 0) {
+      setSelectedCurrency(settings[0].settingCurrency || '$');
+    }
+  }, [settings]);
 
   function handleClearAllTransactions() {
     clearAllTransaction(user?.id);
@@ -56,35 +49,37 @@ function SettingsScreen({handleNavigateBack, handleNavigateUpdateuserScreen}) {
         headingText="Settings"
       />
 
-      <TouchableOpacity
-        style={styles.clearAllContainer}
-        onPress={handleClearAllTransactions}>
-        <Text style={styles.text}>Clear All Transactions</Text>
-        <ForwardIcon height={25} width={25} color="black" />
-      </TouchableOpacity>
+      <View style={styles.mainContainer}>
+        <TouchableOpacity
+          style={styles.clearAllContainer}
+          onPress={handleClearAllTransactions}>
+          <Text style={styles.text}>Clear All Transactions</Text>
+          <ForwardIcon height={25} width={25} color="black" />
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.clearAllContainer}
-        onPress={handleProfile}>
-        <Text style={styles.text}>Profile</Text>
-        <ForwardIcon height={25} width={25} color="black" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.clearAllContainer}
+          onPress={handleProfile}>
+          <Text style={styles.text}>Profile</Text>
+          <ForwardIcon height={25} width={25} color="black" />
+        </TouchableOpacity>
 
-      <View style={styles.dropdownContainer}>
-        <Text style={styles.dropdownLabel}>Select Currency</Text>
-        <Dropdown
-          style={styles.dropdown}
-          data={[
-            {label: 'Dollar ($)', value: '$'},
-            {label: 'Rupee (Rs)', value: 'Rs'},
-            {label: 'Euro (€)', value: '€'},
-          ]}
-          labelField="label"
-          valueField="value"
-          placeholder="Select a currency"
-          value={isLoading ? 'Loading' : selectedCurrency}
-          onChange={item => handleCurrencyChange(item.value)}
-        />
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownLabel}>Select Currency</Text>
+          <Dropdown
+            style={styles.dropdown}
+            data={[
+              {label: 'Dollar ($)', value: '$'},
+              {label: 'Rupee (Rs)', value: 'Rs'},
+              {label: 'Euro (€)', value: '€'},
+            ]}
+            labelField="label"
+            valueField="value"
+            placeholder="Select a currency"
+            value={isLoading ? 'Loading' : selectedCurrency}
+            onChange={item => handleCurrencyChange(item.value)}
+          />
+        </View>
       </View>
     </View>
   );
@@ -97,9 +92,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f9f9f9',
   },
+  mainContainer: {
+    paddingHorizontal: 16,
+  },
   clearAllContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
     backgroundColor: '#fff',
     borderRadius: 10,
     flexDirection: 'row',
@@ -118,16 +116,33 @@ const styles = StyleSheet.create({
     marginTop: '3%',
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#333',
+    fontWeight: '500',
   },
   dropdownContainer: {
     marginVertical: 20,
     paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   dropdownLabel: {
     fontSize: 16,
     color: '#333',
     marginBottom: 8,
+  },
+  dropdown: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    padding: 12,
   },
 });

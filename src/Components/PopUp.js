@@ -40,8 +40,8 @@ function PopUp({
         <TouchableWithoutFeedback
           onPress={() => setModalVisible(!modalVisible)}>
           <View style={styles.centeredView}>
-            <Text style={styles.heading}>Description</Text>
             <View style={styles.modalView}>
+              <Text style={styles.heading}>Description</Text>
               <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <Text style={styles.modalText}>
                   {detailDescription ? detailDescription : description}
@@ -49,18 +49,30 @@ function PopUp({
               </ScrollView>
               <View style={styles.btnContainer}>
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={({pressed}) => [
+                    styles.button,
+                    styles.buttonClose,
+                    pressed && styles.buttonPressed,
+                  ]}
                   onPress={() => setModalVisible(!modalVisible)}>
                   <Text style={styles.textStyle}>Close</Text>
                 </Pressable>
-                <View style={styles.editDeleteConatiner}>
+                <View style={styles.editDeleteContainer}>
                   <Pressable
-                    style={[styles.button, styles.buttonClose]}
+                    style={({pressed}) => [
+                      styles.button,
+                      styles.buttonClose,
+                      pressed && styles.buttonPressed,
+                    ]}
                     onPress={handleEditTransaction}>
                     <Text style={styles.textStyle}>Edit</Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.button, styles.buttonDelete]}
+                    style={({pressed}) => [
+                      styles.button,
+                      styles.buttonDelete,
+                      pressed && styles.buttonPressed,
+                    ]}
                     onPress={deleteTransaction}>
                     <Text style={styles.textStyle}>Delete</Text>
                   </Pressable>
@@ -81,15 +93,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  heading: {
-    color: 'white',
-    fontSize: 18,
-  },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 20,
+    padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -99,8 +107,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    height: '30%',
     width: '90%',
+  },
+  heading: {
+    color: '#333',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
   scrollViewContent: {
     justifyContent: 'center',
@@ -118,6 +131,9 @@ const styles = StyleSheet.create({
   buttonDelete: {
     backgroundColor: 'darkred',
   },
+  buttonPressed: {
+    opacity: 0.8,
+  },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
@@ -127,13 +143,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: '#333',
+    marginVertical: 20,
   },
   btnContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 120,
+    width: '100%',
   },
-  editDeleteConatiner: {
+  editDeleteContainer: {
     flexDirection: 'row',
     gap: 10,
   },

@@ -30,7 +30,7 @@ function ToptabNavigation() {
         <Tab.Navigator
           screenOptions={({route}) => ({
             tabBarActiveTintColor:
-              route.name === 'Income' ? '#29F300' : 'darkred',
+              route.name === 'Income' ? '#28a745' : '#dc3545',
             tabBarInactiveTintColor: 'gray',
             tabBarLabelStyle: {fontSize: 16, fontWeight: 'bold'},
             tabBarStyle: {
@@ -54,11 +54,11 @@ function ToptabNavigation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#f0f4f7',
   },
   tabContainer: {
     flex: 1,
-    marginTop: '10%',
+    marginTop: '5%',
   },
 });
 

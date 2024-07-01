@@ -11,8 +11,6 @@ const CustomSpinner = ({
 }) => {
   if (size === 'small') return <ActivityIndicator size={size} color={color} />;
 
-  // if (size === 'large') return <ActivityIndicator size={size} color={color} />;
-
   const containerStyles = {
     backgroundColor: backgroundColor,
   };

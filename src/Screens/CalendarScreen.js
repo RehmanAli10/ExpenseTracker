@@ -20,40 +20,29 @@ function CalendarScreen({navigation, handleNavigateBack}) {
 
   let updatedTransactions = Object.values(transactions).flat();
 
-  useEffect(
-    function () {
-      const currentDate = new Date().toISOString().split('T')[0];
-
-      const currentTransaction = updatedTransactions.filter(currTrans => {
-        const date = currTrans.time.split('T')[0];
-        return date === currentDate;
-      });
-
-      setSelectedTransactions(currentTransaction);
-    },
-    [selected],
-  );
+  useEffect(() => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    const currentTransaction = updatedTransactions.filter(currTrans => {
+      const date = currTrans.time.split('T')[0];
+      return date === currentDate;
+    });
+    setSelectedTransactions(currentTransaction);
+  }, [selected]);
 
   function handleEdit(id) {
     let newData = Object.values(transactions)
-      .flat(1)
+      .flat()
       .find(currEle => currEle.id === id);
-
     let editedData = {
       id: newData.id,
       amount: newData.amount,
       description: newData.description,
       time: newData.time,
     };
-
     if (newData.type === 'income') {
-      navigation.navigate('IncomeFormScreen', {
-        index: editedData,
-      });
+      navigation.navigate('IncomeFormScreen', {index: editedData});
     } else {
-      navigation.navigate('ExpenseFormScreen', {
-        index: editedData,
-      });
+      navigation.navigate('ExpenseFormScreen', {index: editedData});
     }
   }
 
@@ -77,7 +66,6 @@ function CalendarScreen({navigation, handleNavigateBack}) {
   };
 
   const markedDates = {};
-
   updatedTransactions.forEach(transaction => {
     const date = transaction.time.split('T')[0];
     markedDates[date] = {
@@ -114,7 +102,7 @@ function CalendarScreen({navigation, handleNavigateBack}) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <HeaderComponent
         newIcon={
           <TouchableOpacity onPress={handleNavigateBack}>
@@ -126,8 +114,11 @@ function CalendarScreen({navigation, handleNavigateBack}) {
       <Calendar
         onDayPress={handleDayPress}
         markedDates={markedDates}
-        style={{
-          height: 350,
+        style={styles.calendar}
+        theme={{
+          selectedDayBackgroundColor: '#000',
+          todayTextColor: '#00adf5',
+          arrowColor: '#000',
         }}
       />
       <View style={styles.transactionList}>
@@ -136,16 +127,12 @@ function CalendarScreen({navigation, handleNavigateBack}) {
             Kindly add transactions{' '}
             {Object.keys(selected).length > 0 ? selected : '😊'}
           </Text>
-        ) : filteredTransactions.length > 0 ? (
+        ) : (
           <FlatList
             data={filteredTransactions}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}
           />
-        ) : (
-          <Text style={styles.notSelectedDateText}>
-            Kindly select date to see transactions 😊
-          </Text>
         )}
       </View>
     </View>
@@ -155,29 +142,29 @@ function CalendarScreen({navigation, handleNavigateBack}) {
 export default CalendarScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  calendar: {
+    borderRadius: 10,
+    elevation: 3,
+    margin: 10,
+  },
   transactionList: {
+    flex: 1,
     marginTop: 20,
     padding: 10,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    elevation: 3,
   },
-  title: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  transactionItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  text: {
-    color: 'white',
-  },
-
   notSelectedDateText: {
-    color: 'black',
+    color: '#000',
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',
+    marginTop: 20,
   },
 });
