@@ -25,47 +25,44 @@ function Navigation() {
 
   const navigation = useNavigation();
 
-  useEffect(
-    function () {
-      function backAction() {
-        const currentRoute = navigation.getCurrentRoute();
+  useEffect(() => {
+    const backAction = () => {
+      const currentRoute = navigation.getCurrentRoute();
 
-        if (currentRoute.name === 'Home') {
-          Alert.alert('Hold on!', 'Are you sure you want to exit?', [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {text: 'YES', onPress: () => BackHandler.exitApp()},
-          ]);
-          return true;
-        } else if (
-          currentRoute.name === 'IncomeFormScreen' ||
-          currentRoute.name === 'Update User' ||
-          currentRoute.name === 'income' ||
-          currentRoute.name === 'transactions' ||
-          currentRoute.name === 'Calendar' ||
-          currentRoute.name === 'Drawer' ||
-          currentRoute.name === 'Settings' ||
-          currentRoute.name === 'Report'
-        ) {
-          navigation.navigate('Home');
-          return true;
-        }
-
-        return false;
+      if (currentRoute.name === 'Home') {
+        Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          {text: 'YES', onPress: () => BackHandler.exitApp()},
+        ]);
+        return true;
+      } else if (
+        currentRoute.name === 'IncomeFormScreen' ||
+        currentRoute.name === 'Update User' ||
+        currentRoute.name === 'income' ||
+        currentRoute.name === 'transactions' ||
+        currentRoute.name === 'Calendar' ||
+        currentRoute.name === 'Drawer' ||
+        currentRoute.name === 'Settings' ||
+        currentRoute.name === 'Report'
+      ) {
+        navigation.navigate('Home');
+        return true;
       }
 
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        backAction,
-      );
+      return false;
+    };
 
-      return () => backHandler.remove();
-    },
-    [navigation],
-  );
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [navigation]);
 
   const initialRouteName = isAuthenticated ? 'Home' : 'Welcome';
 
