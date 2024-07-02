@@ -6,24 +6,31 @@ Key Features:
 -------------
 1- Add Income and Expense:
 --> Users can easily add details of their income and expenses.
---> Transaction Section:
-2- Displays all added transactions.
+
+2- Transaction Section:
+--> Displays all added transactions.
 --> Users can filter transactions to view only income or expenses ,highest income ,highest expense, lowest income, lowest expense.
 --> Search functionality to find specific transactions.
 --> Options to update or delete existing transactions.
+
 3- Report Section:
 --> Provides detailed reports of all income and expenses.
 --> Allows users to analyze their financial data over different periods.
+
 4- User-Specific Data:
 --> Each user's data is securely stored in Supabase.
 --> Ensures that users have access to their specific financial data only.
+
 5- Profile Management:
 --> Users can update their profile information.
 --> Option to change the password for enhanced security.
+
 6- Calendar Section:
 --> Displays a calendar view with marks indicating the days when income or expenses were added.
+
 7- Clear All Transactions:
 --> Users have the option to clear all their transactions if needed.
+
 8- Currency Selection:
 --> Users can select their preferred currency for tracking their finances.
 
