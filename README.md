@@ -1,3 +1,48 @@
+Expense Tracker Manager Description
+-----------------------------------
+The Expense Tracker Manager is a comprehensive application designed to help users efficiently manage their finances. This app allows users to keep track of both their income and expenses in an organized manner, providing various features to enhance their financial management experience.
+
+Key Features:
+-------------
+1- Add Income and Expense:
+--> Users can easily add details of their income and expenses.
+
+2- Transaction Section:
+--> Displays all added transactions.
+--> Users can filter transactions to view only income or expenses ,highest income ,highest expense, lowest income, lowest expense.
+--> Search functionality to find specific transactions.
+--> Options to update or delete existing transactions.
+
+3- Report Section:
+--> Provides detailed reports of all income and expenses.
+--> Allows users to analyze their financial data over different periods.
+
+4- User-Specific Data:
+--> Each user's data is securely stored in Supabase.
+--> Ensures that users have access to their specific financial data only.
+
+5- Profile Management:
+--> Users can update their profile information.
+--> Option to change the password for enhanced security.
+
+6- Calendar Section:
+--> Displays a calendar view with marks indicating the days when income or expenses were added.
+
+7- Clear All Transactions:
+--> Users have the option to clear all their transactions if needed.
+
+8- Currency Selection:
+--> Users can select their preferred currency for tracking their finances.
+
+Project Preview:
+---------------
+https://github.com/RehmanAli10/ExpenseTracker/assets/134931662/7ed2af69-1c31-413b-91a5-48cf39aa0311
+
+
+
+
+
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
