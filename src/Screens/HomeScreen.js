@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, BackHandler, Alert} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 
 import {
@@ -41,25 +41,6 @@ function HomeScreen({
   useEffect(
     function () {
       updateSettingsUserid(user?.id);
-
-      function backAction() {
-        Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-          {
-            text: 'Cancel',
-            onPress: () => null,
-            style: 'cancel',
-          },
-          {text: 'YES', onPress: () => BackHandler.exitApp()},
-        ]);
-        return true;
-      }
-
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        backAction,
-      );
-
-      return () => backHandler.remove();
     },
     [user?.id],
   );

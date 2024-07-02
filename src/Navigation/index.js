@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
+import {BackHandler, Alert} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useUser} from '../Authentication/useUser';
 import {
@@ -15,11 +16,56 @@ import {
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
   const {isAuthenticated} = useUser();
+
+  const navigation = useNavigation();
+
+  useEffect(
+    function () {
+      function backAction() {
+        const currentRoute = navigation.getCurrentRoute();
+
+        if (currentRoute.name === 'Home') {
+          Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'YES', onPress: () => BackHandler.exitApp()},
+          ]);
+          return true;
+        } else if (
+          currentRoute.name === 'IncomeFormScreen' ||
+          currentRoute.name === 'Update User' ||
+          currentRoute.name === 'income' ||
+          currentRoute.name === 'transactions' ||
+          currentRoute.name === 'Calendar' ||
+          currentRoute.name === 'Drawer' ||
+          currentRoute.name === 'Settings' ||
+          currentRoute.name === 'Report'
+        ) {
+          navigation.navigate('Home');
+          return true;
+        }
+
+        return false;
+      }
+
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+
+      return () => backHandler.remove();
+    },
+    [navigation],
+  );
 
   const initialRouteName = isAuthenticated ? 'Home' : 'Welcome';
 
